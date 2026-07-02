@@ -28,13 +28,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Prepare clean static site folder
+        run: |
+          mkdir public
+          cp *.html public/
+          cp README.txt public/ || true
+          cp -R assets public/assets
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site files
+      - name: Upload clean static site files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public
 
       - name: Deploy to GitHub Pages
         id: deployment
