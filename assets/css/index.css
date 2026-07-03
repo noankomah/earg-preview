@@ -47,8 +47,10 @@ input {
 }
 
 .container {
+  padding:0;
   width: min(92%, var(--max-width));
   margin: 0 auto;
+  margin-top:-40px;
 }
 
 /* HEADER */
@@ -62,28 +64,31 @@ input {
 }
 
 .header-inner {
-  min-height: 78px;
+  max-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 5px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0px;
   min-width: 250px;
+  margin-left: -100px;
 }
 
 .brand-logo {
-  height: 52px;
-  width: auto;
+  height: 150px;
+  width: 140px;
   object-fit: contain;
+  padding: 0;
 }
 
 .brand-text strong,
 .brand-text small {
+  margin-left: -30px;
   display: block;
 }
 
@@ -198,9 +203,9 @@ input {
   inset: 0;
   opacity: 0;
   transform: translateX(100%);
-  transition: transform 900ms ease, opacity 900ms ease;
-  background-size: cover;
-  background-position: center;
+  transition: transform 300ms ease, opacity 900ms ease;
+  background-size:cover;
+  background-position:center 17%;
   background-repeat: no-repeat;
 }
 
@@ -315,11 +320,8 @@ input {
 
 .eyebrow {
   color: var(--gold);
-  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
-  margin: 0 0 12px;
+  
 }
 
 /* WHO WE ARE */
@@ -330,6 +332,9 @@ input {
     linear-gradient(180deg, #ffffff 0%, #f8fbf9 100%);
 }
 
+.who-content h1{
+  margin-top:-50px;
+}
 .who-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -552,7 +557,7 @@ input {
 
 /* NEWSLETTER */
 .newsletter-section {
-  background: rgb(221, 237, 243);
+  background:#eaf5ef;
   padding: 70px 0;
 }
 
@@ -597,11 +602,13 @@ input {
 .newsletter-form input:focus {
   outline: 3px solid rgba(217, 164, 65, 0.35);
 }
+
+
 /* FOOTER */
 .site-footer {
-  background: #09251b;
+  background: #3d6c5c;
   color: rgba(255, 255, 255, 0.82);
-  padding-top: 14px;
+  padding-top: -14px;
 }
 
 .footer-grid {
@@ -612,9 +619,10 @@ input {
 }
 
 .footer-logo {
-  background: white;
-  width: 125px;
-  margin-bottom: 6px;
+  height:120px;
+  width: 175px;
+  margin-bottom: 0px;
+  color: #040404;
 }
 
 .site-footer h4 {
@@ -625,9 +633,16 @@ input {
 
 .site-footer p {
   margin: 0 0 6px;
+  
   font-size: 0.9rem;
   line-height: 1.45;
 }
+
+.logo-text p {
+  margin-top: -29px;
+}
+
+
 
 .site-footer a {
   display: block;
@@ -669,17 +684,6 @@ input {
 .footer-bottom p {
   margin: 0;
   font-size: 0.82rem;
-}
-
-.footer-bottom {
-  margin-top: 42px;
-  padding: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  text-align: center;
-}
-
-.footer-bottom p {
-  margin: 0;
 }
 
 /* REVIEW PLACEHOLDER PAGES */
