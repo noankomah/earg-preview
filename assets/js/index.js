@@ -24,10 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      images.forEach(function (imagePath, index) {
-        const slide = document.createElement("div");
-        slide.className = "slide";
-        slide.style.backgroundImage = `url("${imagePath}")`;
+      images.forEach(function (image, index) {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+
+      slide.style.backgroundImage = `url("${image.src}")`;
+      slide.style.backgroundPosition = image.position || "center center";
 
         if (index === 0) {
           slide.classList.add("is-active");
@@ -86,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function startAutoSlide() {
-    slideInterval = setInterval(nextSlide, 30000);
+    slideInterval = setInterval(nextSlide, 5000);
   }
 
   function resetAutoSlide() {

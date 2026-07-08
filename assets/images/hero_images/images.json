@@ -1,9 +1,38 @@
-[ 
-  "assets/images/hero_images/image1.jpg ",
-  "assets/images/hero_images/image2.jpg ",
-  "assets/images/hero_images/image3.jpg ",
-  "assets/images/hero_images/earg-logo.png ",
-  "assets/images/hero_images/slide-mentorship.svg",
-  "assets/images/hero_images/earg-logo-transparent.png",
-  "assets/images/hero_images/slide-community.svg"
+[
+  {
+    "src": "assets/images/hero_images/earg-logo-transparent.png",
+    "position": "center 45%"
+  },
+  {
+    "src": "assets/images/hero_images/image1.jpg",
+    "position": "center 45%"
+  },
+  {
+    "src": "assets/images/hero_images/image2.jpg",
+    "position": "center 20%"
+  },
+  {
+    "src": "assets/images/hero_images/stake-holders6.jpg",
+    "position": "center center"
+  },
+  {
+    "src": "assets/images/hero_images/image3.jpg",
+    "position": "center 20%"
+  },
+  {
+    "src": "assets/images/hero_images/stake-holders2.jpg",
+    "position": "center center"
+  },
+  {
+    "src": "assets/images/hero_images/stake-holders3.jpg",
+    "position": "center 30%"
+  },
+  {
+    "src": "assets/images/hero_images/stake-holders5.jpg",
+    "position": "center 28%"
+  },
+  {
+    "src": "assets/images/hero_images/stake-holders4.jpg",
+    "position": "center 30%"
+  }
 ]

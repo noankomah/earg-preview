@@ -223,8 +223,8 @@ button {
 }
 
 .inactive-link {
-  opacity: 0.45;
-  cursor: not-allowed !important;
+  opacity: 1;
+  cursor: pointer !important;
 }
 
 .dropdown-menu .inactive-link:hover {
@@ -485,6 +485,8 @@ button {
 }
 
 /* PEOPLE CARDS */
+
+
 .board-grid,
 .advisory-grid,
 .team-grid {
@@ -502,10 +504,12 @@ button {
 
 .board-grid .person-card:nth-child(4) {
   grid-column: 2 / span 2;
+  margin-bottom: 20px;
 }
 
 .board-grid .person-card:nth-child(5) {
   grid-column: 4 / span 2;
+  margin-bottom: 20px;
 }
 
 .advisory-grid {
@@ -514,7 +518,10 @@ button {
 }
 
 .team-grid {
-  grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  justify-content: center;
+  gap: 32px;
 }
 
 .person-card {
@@ -528,6 +535,7 @@ button {
 .person-photo {
   width: 90%;
   height: 300px;
+  margin: 0 auto 16px;
   border-radius: 18px;
   overflow: hidden;
   background: var(--green-100);
@@ -571,6 +579,8 @@ button {
 }
 
 /* CONTACT */
+
+
 .contact-grid {
   display: grid;
   grid-template-columns: 0.9fr 1fr;
@@ -591,6 +601,7 @@ button {
 }
 
 .contact-list {
+
   display: grid;
   gap: 16px;
 }
@@ -624,6 +635,8 @@ button {
 }
 
 .contact-form {
+  margin-top: 50px;
+  margin-bottom: 50px;
   padding: 30px;
 }
 
