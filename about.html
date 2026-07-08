@@ -13,6 +13,31 @@
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdowns = document.querySelectorAll(".nav-dropdown");
+
+    dropdowns.forEach(function (dropdown) {
+      const parent = dropdown.querySelector(".nav-parent");
+
+      if (!parent) return;
+
+      parent.addEventListener("click", function (event) {
+        if (window.innerWidth > 1024) return;
+
+        event.preventDefault();
+
+        dropdowns.forEach(function (otherDropdown) {
+          if (otherDropdown !== dropdown) {
+            otherDropdown.classList.remove("is-open");
+          }
+        });
+
+        dropdown.classList.toggle("is-open");
+      });
+    });
+  });
+</script>
 <body>
   <!-- HEADER -->
   <header class="site-header" x-data="{ open: false }">
@@ -285,7 +310,7 @@
       <section class="about-route" id="contact-us" data-route="contact-us" hidden>
         <div class="container contact-grid">
           <div class="contact-info">
-            <p class="eyebrow">Contact Us</p>
+            <!--<p class="eyebrow">Contact Us</p> -->
             <h2>Reach out to EA Research Group.</h2>
             <p>
               For partnerships, mentorship, research collaboration, consultancy,

@@ -12,6 +12,31 @@
 
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdowns = document.querySelectorAll(".nav-dropdown");
+
+    dropdowns.forEach(function (dropdown) {
+      const parent = dropdown.querySelector(".nav-parent");
+
+      if (!parent) return;
+
+      parent.addEventListener("click", function (event) {
+        if (window.innerWidth > 1024) return;
+
+        event.preventDefault();
+
+        dropdowns.forEach(function (otherDropdown) {
+          if (otherDropdown !== dropdown) {
+            otherDropdown.classList.remove("is-open");
+          }
+        });
+
+        dropdown.classList.toggle("is-open");
+      });
+    });
+  });
+</script>
 
 <body>
   <!-- HEADER -->
