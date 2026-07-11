@@ -8,3 +8,4 @@ deployment:
     - /bin/cp programs.html $DEPLOYPATH
     - /bin/cp publications.html $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
+    - /bin/cp -R admin $DEPLOYPATH
