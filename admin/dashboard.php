@@ -46,18 +46,18 @@ $stats['messages'] = (int) $pdo
     <main class="admin-dashboard">
         <section class="admin-welcome">
             <p class="admin-eyebrow">Welcome</p>
-            <h1><?= e($admin['full_name']) ?></h1>
+            <h1><?= e((string) $admin['full_name']) ?></h1>
             <p class="admin-muted">
-                Role: <?= e($admin['role']) ?>
+                Role: <?= e((string) $admin['role']) ?>
             </p>
         </section>
 
         <section class="admin-card-grid">
-            <article class="admin-stat-card">
+            <a class="admin-stat-card admin-stat-card-link" href="opportunities/index.php">
                 <span><?= $stats['opportunities'] ?></span>
                 <h2>Opportunities</h2>
-                <p>Scholarships, fellowships, internships and calls.</p>
-            </article>
+                <p>Add, edit and manage scholarships, fellowships, internships and calls.</p>
+            </a>
 
             <article class="admin-stat-card">
                 <span><?= $stats['messages'] ?></span>
@@ -68,7 +68,7 @@ $stats['messages'] = (int) $pdo
             <article class="admin-stat-card">
                 <span>Next</span>
                 <h2>Content manager</h2>
-                <p>The next build will add, edit and publish opportunities.</p>
+                <p>The next build will connect public opportunity cards and read-more pages.</p>
             </article>
         </section>
     </main>
