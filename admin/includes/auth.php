@@ -15,13 +15,18 @@ function start_secure_session(): void
 
     session_name('EARG_ADMIN_SESSION');
 
-    session_set_cookie_params([
-        'lifetime' => 0,
-        'path' => '/',
-        'secure' => $isHttps,
-        'httponly' => true,
-        'samesite' => 'Lax',
-    ]);
+    /*
+     * More compatible session cookie setup for cPanel PHP versions.
+     * The previous array-style session_set_cookie_params can trigger
+     * a 500 error on older PHP versions.
+     */
+    session_set_cookie_params(
+        0,
+        '/; SameSite=Lax',
+        '',
+        $isHttps,
+        true
+    );
 
     session_start();
 }
@@ -90,7 +95,7 @@ function logout_admin(): void
             '',
             time() - 42000,
             $params['path'],
-            $params['domain'],
+            $params['domain'] ?? '',
             $params['secure'],
             $params['httponly']
         );
