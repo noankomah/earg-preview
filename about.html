@@ -37,6 +37,35 @@
       });
     });
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const routeLinks = document.querySelectorAll("[data-route-link]");
+    const mainNav = document.querySelector(".main-nav");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    routeLinks.forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (window.innerWidth <= 1024) {
+          /* Close the main mobile menu */
+          if (mainNav) {
+            mainNav.classList.remove("is-open");
+          }
+
+          /* Close any open dropdown */
+          document
+            .querySelectorAll(".nav-dropdown.is-open")
+            .forEach(function (dropdown) {
+              dropdown.classList.remove("is-open");
+            });
+
+          /* Reset the hamburger button */
+          if (menuToggle) {
+            menuToggle.setAttribute("aria-expanded", "false");
+          }
+        }
+      });
+    });
+  });
 </script>
 <body>
   <!-- HEADER -->
@@ -85,12 +114,23 @@
 
         <div class="nav-dropdown">
           <button type="button" class="nav-parent">Publications</button>
+
           <div class="dropdown-menu">
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Blogs</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Newsletters</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Reports</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Annual Reports</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Financial Reports</a>
+            <a href="publications.html#blogs" data-route-link="blogs">
+              Blogs
+            </a>
+
+            <a href="publications.html#newsletters" data-route-link="newsletters">
+              Newsletters
+            </a>
+
+            <a href="publications.html#reports" data-route-link="reports">
+              Reports
+            </a>
+
+            <a href="publications.html#scholarship-opportunities" data-route-link="scholarship-opportunities">
+              Scholarship & Opportunities
+            </a>
           </div>
         </div>
 

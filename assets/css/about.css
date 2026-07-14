@@ -1574,6 +1574,22 @@ button {
   margin-left: 6px;
 }
 
+@media (max-width: 1024px) {
+  html,
+  body {
+    overflow-x: clip !important;
+  }
+
+  .site-header {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    background: #ffffff;
+  }
+}
+
 /* =====================================================
    ABOUT PAGE — COMPLETE RESPONSIVE VIEW
    Replace the old responsive section with this block
@@ -1712,14 +1728,16 @@ button {
   }
 
   .main-nav {
-    position: absolute;
-    top: calc(100% + 5px);
-    right: 0;
-    left: auto;
+     position: fixed !important;
+    top: 68px !important;
+    width: 210px !important;
+    max-width: calc(100vw - 18px) !important;
 
-    width: 180px;
-    max-width: calc(100vw - 20px);
-    max-height: calc(100vh - 85px);
+    right: 0 !important;
+    left: auto !important;
+
+    
+    max-height: calc(100vh - 90px);
     overflow-y: auto;
 
     display: none;
@@ -1727,13 +1745,13 @@ button {
     align-items: stretch;
     gap: 0;
 
-    margin: 0;
-    padding: 6px;
+    margin: 0 !important; 
+    padding: 0 !important;
 
-    background: #f3f8f5;
+    background:rgb(246, 246, 246);
     border: 1px solid var(--border);
-    border-radius: 11px;
-    box-shadow: 0 14px 34px rgba(15, 47, 36, 0.18);
+    border-radius: 12px;
+    box-shadow: 0 14px 36px rgba(15, 47, 36, 0.2);
   }
 
   .main-nav.is-open {
@@ -1774,7 +1792,7 @@ button {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 2;
     text-align: left;
   }
 
@@ -2428,5 +2446,22 @@ button {
 
   .footer-grid > div:first-child {
     grid-column: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  /* Hide email, location and focus areas */
+  #contact-us .contact-info {
+    display: none;
+  }
+
+  /* Show only the message form */
+  #contact-us .contact-grid {
+    display: block;
+  }
+
+  #contact-us .contact-form {
+    width: 100%;
+    margin-top: 0;
   }
 }

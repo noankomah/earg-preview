@@ -7,6 +7,9 @@ deployment:
     - /bin/cp events.html $DEPLOYPATH
     - /bin/cp programs.html $DEPLOYPATH
     - /bin/cp publications.html $DEPLOYPATH
+    - /bin/cp opportunity.php $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
+    - /bin/rm -rf $DEPLOYPATH/api
+    - /bin/cp -R api $DEPLOYPATH
     - /bin/rm -rf $DEPLOYPATH/admin
     - /bin/cp -R admin $DEPLOYPATH

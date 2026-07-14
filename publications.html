@@ -1,128 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Publications | EA Research Group</title>
-  <meta name="description" content="EA Research Group publications page placeholder." />
+    <title>Publications | EA Research Group</title>
+    <meta
+      name="description"
+      content="EA Research Group blogs, newsletters, reports, scholarships and opportunities."
+    />
 
-  <link rel="stylesheet" href="assets/css/about.css" />
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
+    <link rel="stylesheet" href="assets/css/about.css?v=2">
+    <link rel="stylesheet" href="assets/css/publications.css?v=2">  
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdownButtons = document.querySelectorAll(".nav-parent");
+      const routeLinks = document.querySelectorAll("[data-route-link]");
+      const mainNav = document.querySelector(".main-nav");
+      const menuToggle = document.querySelector(".menu-toggle");
 
-<body>
-  <!-- HEADER -->
-  <header class="site-header" x-data="{ open: false }">
-    <div class="container header-inner">
+      /*
+        MOBILE DROPDOWN MENU
+        Opens/closes About Us, Programs, Publications on mobile.
+      */
+      dropdownButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          if (window.innerWidth > 1024) return;
 
-      <a href="index.html" class="brand" aria-label="EA Research Group home">
-        <img src="assets/images/earg-logo.png" alt="EA Research Group Logo" class="brand-logo" />
-        <span class="brand-text">
-          <strong>EA Research Group</strong>
-          <small>Research • Mentorship • Innovation • Impact</small>
-        </span>
-      </a>
+          const currentDropdown = button.closest(".nav-dropdown");
+          if (!currentDropdown) return;
 
-      <button class="menu-toggle" type="button" @click="open = !open" :aria-expanded="open.toString()" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+          document
+            .querySelectorAll(".nav-dropdown.is-open")
+            .forEach(function (dropdown) {
+              if (dropdown !== currentDropdown) {
+                dropdown.classList.remove("is-open");
+              }
+            });
 
-      <nav class="main-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
+          currentDropdown.classList.toggle("is-open");
+        });
+      });
 
-        <div class="nav-dropdown">
-          <button type="button" class="nav-parent">About Us</button>
-          <div class="dropdown-menu">
-            <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
-            <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
-            <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
-            <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
+      /*
+        CLOSE MOBILE MENU AFTER CLICKING A LINK
+      */
+      routeLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (window.innerWidth <= 1024) {
+            if (mainNav) {
+              mainNav.classList.remove("is-open");
+            }
+
+            document
+              .querySelectorAll(".nav-dropdown.is-open")
+              .forEach(function (dropdown) {
+                dropdown.classList.remove("is-open");
+              });
+
+            if (menuToggle) {
+              menuToggle.setAttribute("aria-expanded", "false");
+            }
+          }
+        });
+      });
+
+      /*
+        PUBLICATIONS PAGE ROUTING
+        One file: publications.html
+        Different page views: #blogs, #newsletters, #reports, #scholarship-opportunities
+      */
+      const publicationRoutes = document.querySelectorAll("[data-publication-route]");
+
+      function showPublicationRoute() {
+        if (!publicationRoutes.length) return;
+
+        let route = window.location.hash.replace("#", "");
+
+        if (!route) {
+          route = "blogs";
+          history.replaceState(null, "", "publications.html#blogs");
+        }
+
+        publicationRoutes.forEach(function (section) {
+          section.hidden = section.id !== route;
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+      showPublicationRoute();
+      window.addEventListener("hashchange", showPublicationRoute);
+
+      const opportunitiesGrid = document.getElementById("public-opportunities-grid");
+      const opportunitiesLoading = document.getElementById("opportunities-loading");
+      const opportunitiesError = document.getElementById("opportunities-error");
+      const opportunitiesEmpty = document.getElementById("opportunities-empty");
+
+      let opportunitiesLoaded = false;
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formatOpportunityDate(dateValue) {
+        if (!dateValue) {
+          return "Not specified";
+        }
+
+        const date = new Date(`${dateValue}T00:00:00`);
+
+        if (Number.isNaN(date.getTime())) {
+          return dateValue;
+        }
+
+        return new Intl.DateTimeFormat("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }).format(date);
+      }
+
+      function showOpportunityState(state) {
+        if (opportunitiesLoading) {
+          opportunitiesLoading.hidden = state !== "loading";
+        }
+
+        if (opportunitiesError) {
+          opportunitiesError.hidden = state !== "error";
+        }
+
+        if (opportunitiesEmpty) {
+          opportunitiesEmpty.hidden = state !== "empty";
+        }
+
+        if (opportunitiesGrid) {
+          opportunitiesGrid.hidden = state !== "success";
+        }
+      }
+
+      function createOpportunityCard(opportunity) {
+        const article = document.createElement("article");
+        article.className = "opportunity-card";
+
+        if (Number(opportunity.is_featured) === 1) {
+          article.classList.add("is-featured");
+        }
+
+        const locationText =
+          opportunity.country ||
+          opportunity.host_organization ||
+          "";
+
+        article.innerHTML = `
+          <div class="opportunity-card-heading">
+            <p class="opportunity-type">
+              ${escapeHtml(opportunity.category)}
+            </p>
+
+            ${
+              Number(opportunity.is_featured) === 1
+                ? '<span class="opportunity-featured-badge">Featured</span>'
+                : ""
+            }
           </div>
-        </div>
 
-        <div class="nav-dropdown">
-          <button type="button" class="nav-parent">Programs</button>
-          <div class="dropdown-menu">
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Mentorship and Fellowship</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Research Capacity</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Community Research</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Consultancy and Partnerships</a>
+          <h3>${escapeHtml(opportunity.title)}</h3>
+
+          <p class="opportunity-summary">
+            ${escapeHtml(opportunity.summary)}
+          </p>
+
+          <div class="opportunity-meta">
+            <span>
+              <strong>Deadline:</strong>
+              ${escapeHtml(formatOpportunityDate(opportunity.deadline))}
+            </span>
+
+            <span>
+              <strong>Status:</strong>
+              ${escapeHtml(opportunity.status)}
+            </span>
+
+            ${
+              locationText
+                ? `
+                  <span>
+                    <strong>Location/Host:</strong>
+                    ${escapeHtml(locationText)}
+                  </span>
+                `
+                : ""
+            }
           </div>
-        </div>
+
+          <a
+            href="opportunity.php?slug=${encodeURIComponent(opportunity.slug)}"
+            class="read-more-link"
+          >
+            Read more →
+          </a>
+        `;
+
+        return article;
+      }
+
+      async function loadOpportunities() {
+        if (opportunitiesLoaded || !opportunitiesGrid) {
+          return;
+        }
+
+        opportunitiesLoaded = true;
+        showOpportunityState("loading");
+
+        try {
+          const response = await fetch("api/opportunities.php", {
+            headers: {
+              Accept: "application/json"
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          if (!data.success || !Array.isArray(data.opportunities)) {
+            throw new Error("Invalid API response");
+          }
+
+          opportunitiesGrid.innerHTML = "";
+
+          if (data.opportunities.length === 0) {
+            showOpportunityState("empty");
+            return;
+          }
+
+          data.opportunities.forEach(function (opportunity) {
+            opportunitiesGrid.appendChild(
+              createOpportunityCard(opportunity)
+            );
+          });
+
+          showOpportunityState("success");
+        } catch (error) {
+          console.error("Unable to load opportunities:", error);
+          showOpportunityState("error");
+        }
+      }
+
+      function loadOpportunitiesForCurrentRoute() {
+        const route = window.location.hash.replace("#", "");
+
+        if (route === "scholarship-opportunities") {
+          loadOpportunities();
+        }
+      }
+
+      loadOpportunitiesForCurrentRoute();
+
+      window.addEventListener(
+        "hashchange",
+        loadOpportunitiesForCurrentRoute
+      );
+    });
+  </script>
+
+  <body>
+    <!-- HEADER -->
+    <header class="site-header" x-data="{ open: false }">
+      <div class="container header-inner">
+
+        <a href="index.html" class="brand" aria-label="EA Research Group home">
+          <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="brand-logo" />
+          <span class="brand-text">
+            <strong>EA Research Group</strong>
+            <small>Research • Mentorship • Innovation • Impact</small>
+          </span>
+        </a>
+
+        <button class="menu-toggle" @click="open = !open" :aria-expanded="open.toString()" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+
+          <div class="nav-dropdown">
+            <button type="button" class="nav-parent">About Us</button>
+            <div class="dropdown-menu">
+              <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
+              <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
+              <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
+              <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
+            </div>
+          </div>
+            <div class="nav-dropdown">
+            <button type="button" class="nav-parent">Programs</button>
+            <div class="dropdown-menu">
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Mentorship and Fellowship</a>
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Research Capacity</a>
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Community Research</a>
+              <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Consultancy and Partnerships</a>
+            </div>
+          </div>
 
         <div class="nav-dropdown">
           <button type="button" class="nav-parent">Publications</button>
+
           <div class="dropdown-menu">
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Blogs</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Newsletters</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Reports</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Annual Reports</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Financial Reports</a>
+            <a href="publications.html#blogs" data-route-link="blogs">
+              Blogs
+            </a>
+
+            <a href="publications.html#newsletters" data-route-link="newsletters">
+              Newsletters
+            </a>
+
+            <a href="publications.html#reports" data-route-link="reports">
+              Reports
+            </a>
+
+            <a href="publications.html#scholarship-opportunities" data-route-link="scholarship-opportunities">
+              Scholarship & Opportunities
+            </a>
           </div>
         </div>
 
-        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Events</a>
-      </nav>
 
-    </div>
-  </header>
 
-  <main class="empty-page" aria-label="Publications">
-    <!--
-      Publications content will be added later.
-      This placeholder file exists so the page is ready,
-      but navigation links are intentionally inactive for now.
-    -->
-  </main>
+          <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Events</a>
+        </nav>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="footer-logo" />
-        <p>
-          Effective Altruist Research Group is a non-profit research and academic
-          development organization advancing research, mentorship, innovation and impact.
-        </p>
       </div>
+    </header>
 
-      <div>
-        <h4>Quick Links</h4>
-        <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
-        <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
-        <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
-        <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
-      </div>
+    <main aria-label="Publications">
 
-      <div>
-        <h4>Find Us</h4>
-        <p>Tamale, Northern Region, Ghana</p>
-        <p><a href="mailto:earesearchgrp24@gmail.com">earesearchgrp24@gmail.com</a></p>
+      <!-- =====================================================
+          BLOGS SECTION
+          Route: publications.html#blogs
+      ====================================================== -->
+      <section id="blogs" class="about-route publication-route" data-publication-route>
+        <div class="container">
+          <div class="section-heading wide">
+            <p class="eyebrow">Blogs</p>
+            <p>
+              Read articles, reflections and informed perspectives from researchers,
+              professionals and contributors on topics related to research, mentorship,
+              innovation and community development.
+            </p>
+          </div>
 
-        <h4 class="follow-heading">Follow Us</h4>
-        <div class="social-links">
-          <a href="#">Facebook</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">X</a>
+          <div class="values-grid">
+            <article class="value-card">
+              <h3>Research and development perspectives</h3>
+              <p>
+                Reflections on how research can respond to community needs,
+                development priorities and emerging social challenges.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Mentorship and academic growth</h3>
+              <p>
+                Writings on student mentorship, postgraduate preparation,
+                research culture and early-career development.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Innovation and impact</h3>
+              <p>
+                Articles on practical innovation, institutional growth and how ideas
+                can be translated into measurable social impact.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Trending issues</h3>
+              <p>
+                Commentary on relevant trends connected to education, research,
+                policy, science and community development.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================
+          NEWSLETTERS SECTION
+          Route: publications.html#newsletters
+      ====================================================== -->
+      <section id="newsletters" class="about-route publication-route" data-publication-route hidden>
+        <div class="container">
+          <div class="section-heading wide">
+            <p class="eyebrow">Newsletters</p>
+           
+            <p>
+              Follow updates on our programmes, partnerships, events, opportunities,
+              research activities and institutional development.
+            </p>
+          </div>
+
+          <div class="values-grid">
+            <article class="value-card">
+              <h3>Monthly updates</h3>
+              <p>
+                Updates on EARG activities, organisational development and programme
+                progress.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Opportunities round-up</h3>
+              <p>
+                A curated summary of selected scholarships, fellowships, internships
+                and academic opportunities.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Programme highlights</h3>
+              <p>
+                Highlights from mentorship activities, research capacity programmes
+                and community-focused initiatives.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Upcoming activities</h3>
+              <p>
+                Notices on upcoming calls, events, meetings, training sessions and
+                other important dates.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================
+          REPORTS SECTION
+          Route: publications.html#reports
+      ====================================================== -->
+      <section id="reports" class="about-route publication-route" data-publication-route hidden>
+        <div class="container">
+          <div class="section-heading wide">
+            <p class="eyebrow">Reports</p>
+            
+            <p>
+              Access research reports, annual reports, financial reports, policy
+              briefs and other institutional publications from EA Research Group.
+            </p>
+          </div>
+
+          <div class="values-grid">
+            <article class="value-card">
+              <h3>Research reports</h3>
+              <p>
+                Reports from research projects, field activities, needs assessments
+                and evidence-gathering work.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Annual reports</h3>
+              <p>
+                Yearly summaries of EARG activities, achievements, partnerships and
+                institutional progress.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Financial reports</h3>
+              <p>
+                Financial accountability documents, summaries and reports prepared
+                for transparency and institutional reporting.
+              </p>
+            </article>
+
+            <article class="value-card">
+              <h3>Policy and learning briefs</h3>
+              <p>
+                Short publications that communicate lessons, recommendations and
+                insights from research or programme work.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================
+          SCHOLARSHIP & OPPORTUNITIES SECTION
+          Route: publications.html#scholarship-opportunities
+      ====================================================== -->
+      <section>
+        <div
+          id="opportunities-loading"
+          class="opportunity-state opportunity-loading-state"
+          role="status"
+        >
+          <p>Loading opportunities...</p>
+        </div>
+
+        <div
+          id="opportunities-error"
+          class="opportunity-state opportunity-error-state"
+          role="alert"
+          hidden
+        >
+          <h3>Unable to load opportunities</h3>
+          <p>
+            We could not retrieve the opportunities at this time. Please try again later.
+          </p>
+        </div>
+
+        <div
+          id="opportunities-empty"
+          class="opportunity-state opportunity-empty-state"
+          hidden
+        >
+          <h3>No opportunities available</h3>
+          <p>
+            There are currently no published opportunities. Please check again soon.
+          </p>
+        </div>
+
+        <div
+          id="public-opportunities-grid"
+          class="opportunity-grid"
+          aria-live="polite"
+        ></div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="footer-logo" />
+          <p>
+            Effective Altruist Research Group is a non-profit research and academic
+            development organization advancing research, mentorship, innovation and impact.
+          </p>
+        </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
+          <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
+          <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
+          <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
+        </div>
+
+        <div>
+          <h4>Find Us</h4>
+          <p>Tamale, Northern Region, Ghana</p>
+          <p><a href="mailto:earesearchgrp24@gmail.com">earesearchgrp24@gmail.com</a></p>
+
+          <h4 class="follow-heading">Follow Us</h4>
+          <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">X</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="footer-bottom">
-      <p>© <span id="year"></span> EA Research Group. All rights reserved.</p>
-    </div>
-  </footer>
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> EA Research Group. All rights reserved.</p>
+      </div>
+    </footer>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const year = document.getElementById("year");
-      if (year) year.textContent = new Date().getFullYear();
-    });
-  </script>
-</body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const year = document.getElementById("year");
+        if (year) year.textContent = new Date().getFullYear();
+      });
+    </script>
+  </body>
 </html>
