@@ -6,12 +6,12 @@ require_once __DIR__ . '/admin/includes/db.php';
 require_once __DIR__ . '/admin/includes/content_helpers.php';
 
 $slug = trim((string) ($_GET['slug'] ?? ''));
-$opportunity = null;
+$publication = null;
 $errorMessage = '';
 
 if ($slug === '') {
     http_response_code(404);
-    $errorMessage = 'The requested opportunity could not be found.';
+    $errorMessage = 'The requested publication could not be found.';
 } else {
     try {
         $pdo = db();
@@ -21,18 +21,17 @@ if ($slug === '') {
             SELECT
                 title,
                 slug,
-                category,
+                publication_type,
                 summary,
-                full_description,
-                deadline,
-                status,
-                country,
-                host_organization,
-                application_link,
+                full_content,
+                author,
+                publication_date,
+                cover_image,
+                document_link,
                 is_featured,
                 created_at,
                 updated_at
-            FROM opportunities
+            FROM publications
             WHERE slug = :slug
               AND is_published = 1
             LIMIT 1
@@ -40,20 +39,20 @@ if ($slug === '') {
         );
 
         $statement->execute([
-            'slug' => $slug,
+            ':slug' => $slug,
         ]);
 
-        $opportunity = $statement->fetch();
+        $publication = $statement->fetch();
 
-        if (!$opportunity) {
+        if (!$publication) {
             http_response_code(404);
-            $errorMessage = 'The requested opportunity could not be found.';
+            $errorMessage = 'The requested publication could not be found.';
         }
     } catch (Throwable $exception) {
-        error_log('Public opportunity page error: ' . $exception->getMessage());
+        error_log('Public publication page error: ' . $exception->getMessage());
 
         http_response_code(500);
-        $errorMessage = 'This opportunity cannot be displayed at the moment.';
+        $errorMessage = 'This publication cannot be displayed at the moment.';
     }
 }
 
@@ -62,7 +61,7 @@ function e(string $value): string
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
-function format_public_date(?string $date): string
+function format_publication_date(?string $date): string
 {
     if ($date === null || $date === '') {
         return 'Not specified';
@@ -84,22 +83,22 @@ function format_public_date(?string $date): string
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        <?= $opportunity
-            ? e((string) $opportunity['title']) . ' | EA Research Group'
-            : 'Opportunity Not Found | EA Research Group'
+        <?= $publication
+            ? e((string) $publication['title']) . ' | EA Research Group'
+            : 'Publication Not Found | EA Research Group'
         ?>
     </title>
 
     <meta
         name="description"
-        content="<?= $opportunity
-            ? e((string) $opportunity['summary'])
-            : 'EA Research Group opportunity information.'
+        content="<?= $publication
+            ? e((string) $publication['summary'])
+            : 'EA Research Group publication.'
         ?>"
     >
 
     <link rel="stylesheet" href="assets/css/about.css?v=2">
-    <link rel="stylesheet" href="assets/css/publications.css?v=3">
+    <link rel="stylesheet" href="assets/css/publications.css?v=4">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -167,81 +166,87 @@ function format_public_date(?string $date): string
         </div>
     </header>
 
-    <main class="opportunity-detail-page">
-        <section class="about-route publication-route">
+    <main class="publication-detail-page">
+        <section class="publication-route">
             <div class="container">
 
                 <a
-                    href="publications.html#scholarship-opportunities"
-                    class="opportunity-back-link"
+                    href="publications.html"
+                    class="publication-back-link"
+                    id="publication-back-link"
                 >
-                    ← Back to opportunities
+                    ← Back to publications
                 </a>
 
-                <?php if ($opportunity): ?>
+                <?php if ($publication): ?>
 
-                    <article class="opportunity-detail-card">
+                    <article class="publication-detail-card">
 
-                        <div class="opportunity-detail-heading">
-                            <p class="opportunity-type">
-                                <?= e((string) $opportunity['category']) ?>
+                        <div class="publication-detail-heading">
+                            <p class="publication-type">
+                                <?= e((string) $publication['publication_type']) ?>
                             </p>
 
-                            <?php if ((int) $opportunity['is_featured'] === 1): ?>
-                                <span class="opportunity-featured-badge">
+                            <?php if ((int) $publication['is_featured'] === 1): ?>
+                                <span class="publication-featured-badge">
                                     Featured
                                 </span>
                             <?php endif; ?>
                         </div>
 
-                        <h1><?= e((string) $opportunity['title']) ?></h1>
+                        <h1><?= e((string) $publication['title']) ?></h1>
 
-                        <p class="opportunity-detail-summary">
-                            <?= e((string) $opportunity['summary']) ?>
+                        <p class="publication-detail-summary">
+                            <?= e((string) $publication['summary']) ?>
                         </p>
 
-                        <div class="opportunity-detail-meta">
+                        <div class="publication-detail-meta">
                             <div>
-                                <strong>Status</strong>
-                                <span><?= e((string) $opportunity['status']) ?></span>
-                            </div>
-
-                            <div>
-                                <strong>Deadline</strong>
+                                <strong>Publication type</strong>
                                 <span>
-                                    <?= e(format_public_date($opportunity['deadline'])) ?>
+                                    <?= e((string) $publication['publication_type']) ?>
                                 </span>
                             </div>
 
-                            <?php if (!empty($opportunity['country'])): ?>
-                                <div>
-                                    <strong>Country</strong>
-                                    <span><?= e((string) $opportunity['country']) ?></span>
-                                </div>
-                            <?php endif; ?>
+                            <div>
+                                <strong>Publication date</strong>
+                                <span>
+                                    <?= e(format_publication_date(
+                                        $publication['publication_date']
+                                    )) ?>
+                                </span>
+                            </div>
 
-                            <?php if (!empty($opportunity['host_organization'])): ?>
+                            <?php if (!empty($publication['author'])): ?>
                                 <div>
-                                    <strong>Host organization</strong>
-                                    <span>
-                                        <?= e((string) $opportunity['host_organization']) ?>
-                                    </span>
+                                    <strong>Author</strong>
+                                    <span><?= e((string) $publication['author']) ?></span>
                                 </div>
                             <?php endif; ?>
                         </div>
 
-                        <div class="opportunity-detail-body">
-                            <?= sanitize_rich_text((string) $opportunity['full_description']) ?>
+                        <?php if (!empty($publication['cover_image'])): ?>
+                            <img
+                                src="<?= e((string) $publication['cover_image']) ?>"
+                                alt="<?= e((string) $publication['title']) ?>"
+                                class="publication-cover-image"
+                            >
+                        <?php endif; ?>
+
+                        <div class="publication-detail-body">
+                            <?= sanitize_rich_text(
+                                (string) $publication['full_content']
+                            ) ?>
                         </div>
 
-                        <?php if (!empty($opportunity['application_link'])): ?>
+                        <?php if (!empty($publication['document_link'])): ?>
                             <a
-                                href="<?= e((string) $opportunity['application_link']) ?>"
-                                class="opportunity-apply-button"
+                                href="<?= e((string) $publication['document_link']) ?>"
+                                class="publication-document-button"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Visit application page
+                                Open document
                             </a>
                         <?php endif; ?>
 
@@ -250,7 +255,7 @@ function format_public_date(?string $date): string
                 <?php else: ?>
 
                     <section class="opportunity-state opportunity-error-state">
-                        <h1>Opportunity not found</h1>
+                        <h1>Publication not found</h1>
                         <p><?= e($errorMessage) ?></p>
                     </section>
 
@@ -309,6 +314,26 @@ function format_public_date(?string $date): string
 
             if (year) {
                 year.textContent = new Date().getFullYear();
+            }
+
+            const publicationType =
+                <?= json_encode(
+                    $publication['publication_type'] ?? '',
+                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                ) ?>;
+
+            const backLink = document.getElementById("publication-back-link");
+
+            if (backLink) {
+                const routeMap = {
+                    Blog: "blogs",
+                    Newsletter: "newsletters",
+                    Report: "reports"
+                };
+
+                const route = routeMap[publicationType] || "blogs";
+
+                backLink.href = `publications.html#${route}`;
             }
 
             const dropdownButtons = document.querySelectorAll(".nav-parent");

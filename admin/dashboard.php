@@ -13,6 +13,7 @@ $pdo = db();
 
 $stats = [
     'opportunities' => 0,
+    'publications' => 0,
     'messages' => 0,
 ];
 
@@ -65,11 +66,14 @@ $stats['messages'] = (int) $pdo
                 <p>Unread contact messages from the public website.</p>
             </article>
 
-            <article class="admin-stat-card">
-                <span>Next</span>
-                <h2>Content manager</h2>
-                <p>The next build will connect public opportunity cards and read-more pages.</p>
-            </article>
+           <a
+                class="admin-stat-card admin-stat-card-link"
+                href="publications/index.php"
+            >
+                <span><?= $stats['publications'] ?></span>
+                <h2>Publications</h2>
+                <p>Add, edit and manage blogs, newsletters and reports.</p>
+            </a>
         </section>
     </main>
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/opportunity_helpers.php';
+require_once __DIR__ . '/../includes/content_helpers.php';
 
 require_admin();
 
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data['title'] = trim((string) ($_POST['title'] ?? ''));
     $data['category'] = trim((string) ($_POST['category'] ?? ''));
     $data['summary'] = trim((string) ($_POST['summary'] ?? ''));
-    $data['full_description'] = trim((string) ($_POST['full_description'] ?? ''));
+    $data['full_description'] = sanitize_rich_text((string) ($_POST['full_description'] ?? ''));
     $data['deadline'] = trim((string) ($_POST['deadline'] ?? ''));
     $data['status'] = trim((string) ($_POST['status'] ?? ''));
     $data['country'] = trim((string) ($_POST['country'] ?? ''));
@@ -133,6 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Opportunity | EA Research Group</title>
     <link rel="stylesheet" href="../assets/admin.css">
+    <link
+        href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+        rel="stylesheet"
+    >
 </head>
 <body class="admin-body">
 
@@ -185,10 +190,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <textarea name="summary" rows="4" required><?= e($data['summary']) ?></textarea>
                 </label>
 
-                <label>
+                <label for="full_description_editor">
                     Full description
-                    <textarea name="full_description" rows="10" required><?= e($data['full_description']) ?></textarea>
                 </label>
+
+                <input
+                    type="hidden"
+                    name="full_description"
+                    id="full_description"
+                    value="<?= e($data['full_description']) ?>"
+                >
+
+                <div
+                    id="full_description_editor"
+                    class="admin-rich-text-editor"
+                    data-rich-text-editor
+                    data-target="full_description"
+                    data-placeholder="Enter the full opportunity description..."
+                ></div>
 
                 <div class="admin-two-cols">
                     <label>
@@ -241,6 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="../assets/rich-text.js"></script>                                
 </body>
 </html>

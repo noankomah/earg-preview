@@ -418,6 +418,59 @@ body.admin-body {
   text-decoration: none;
 }
 
+/* =====================================================
+   RICH TEXT EDITOR
+===================================================== */
+
+.admin-rich-text-editor {
+  min-height: 260px;
+  background: #ffffff;
+}
+
+.admin-form .ql-toolbar.ql-snow {
+  border: 1px solid #d7ddd9;
+  border-radius: 10px 10px 0 0;
+  background: #f8faf9;
+}
+
+.admin-form .ql-container.ql-snow {
+  min-height: 260px;
+  border: 1px solid #d7ddd9;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.admin-form .ql-editor {
+  min-height: 260px;
+  line-height: 1.7;
+}
+
+.admin-form .ql-editor h2 {
+  font-size: 1.45rem;
+  margin: 1rem 0 0.55rem;
+}
+
+.admin-form .ql-editor h3 {
+  font-size: 1.18rem;
+  margin: 0.9rem 0 0.45rem;
+}
+
+.admin-form .ql-editor ul,
+.admin-form .ql-editor ol {
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .admin-rich-text-editor,
+  .admin-form .ql-container.ql-snow,
+  .admin-form .ql-editor {
+    min-height: 220px;
+  }
+}
+
 @media (max-width: 760px) {
   .admin-topnav {
     gap: 10px;
