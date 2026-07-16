@@ -14,3 +14,5 @@ deployment:
     - /bin/cp -R api $DEPLOYPATH
     - /bin/rm -rf $DEPLOYPATH/admin
     - /bin/cp -R admin $DEPLOYPATH
+    - /bin/cp sitemap.xml $DEPLOYPATH
+    - /bin/cp robots.txt $DEPLOYPATH
