@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
-require_once '/home/earesearch/earg_private/config.php';
+$configFile = __DIR__ . '/config.local.php';
+
+if (is_file($configFile)) {
+    require_once $configFile;
+} else {
+    require_once '/home/earesearch/earg_private/config.php';
+}
 
 function db(): PDO
 {
