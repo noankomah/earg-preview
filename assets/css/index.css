@@ -603,6 +603,26 @@ input {
   outline: 3px solid rgba(217, 164, 65, 0.35);
 }
 
+/* Result message shown under the newsletter form after subscribing */
+.newsletter-message {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.newsletter-message.is-success {
+  color: var(--green-900);
+  background: #eaf5ef;
+  border: 1px solid rgba(61, 108, 92, 0.35);
+}
+
+.newsletter-message.is-error {
+  color: #a33b3b;
+  background: #fdeaea;
+  border: 1px solid rgba(163, 59, 59, 0.35);
+}
+
 
 /* FOOTER */
 .site-footer {

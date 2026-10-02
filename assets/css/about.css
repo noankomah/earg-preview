@@ -2465,3 +2465,17 @@ button {
     margin-top: 0;
   }
 }
+
+/* Message shown above the contact form after submit */
+.contact-status {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.contact-status:not([hidden]) {
+  color: var(--green-900);
+  background: rgba(61, 108, 92, 0.12);
+  border: 1px solid rgba(61, 108, 92, 0.35);
+}

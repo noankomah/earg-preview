@@ -111,11 +111,47 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const newsletterForm = document.querySelector(".newsletter-form");
+  const newsletterMessage = document.getElementById("newsletterMessage");
+
   if (newsletterForm) {
+    // Show a result message in the newsletter box.
+    function showNewsletterMessage(text, isError) {
+      if (!newsletterMessage) return;
+
+      newsletterMessage.textContent = text;
+      newsletterMessage.classList.toggle("is-error", Boolean(isError));
+      newsletterMessage.classList.toggle("is-success", !isError);
+      newsletterMessage.hidden = false;
+    }
+
     newsletterForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      alert("Thank you for subscribing. Newsletter integration will be connected later.");
-      newsletterForm.reset();
+
+      const email = newsletterForm.querySelector('input[name="email"]');
+
+      if (!email || !email.value) return;
+
+      // Send the email address to newsletter.php which stores it in the DB.
+      fetch("newsletter.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "email=" + encodeURIComponent(email.value),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          if (data.success) {
+            newsletterForm.reset();
+          }
+
+          showNewsletterMessage(data.message || "Thank you for subscribing!", !data.success);
+        })
+        .catch(function () {
+          showNewsletterMessage("Unable to subscribe right now. Please try again later.", true);
+        });
     });
   }
 });

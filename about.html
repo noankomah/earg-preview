@@ -96,6 +96,7 @@
             <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
             <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
             <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
+            <a href="founder-story.php">Founder's Story</a>
             <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
             <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
             <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
@@ -377,8 +378,11 @@
             </div>
           </div>
 
-          <form class="contact-form" action="mailto:earesearchgrp24@gmail.com" method="post" enctype="text/plain">
+          <form class="contact-form" action="contact.php" method="post">
             <h3>Send a message</h3>
+
+            <!-- Small notice shown after the form is submitted -->
+            <p id="contactStatus" class="contact-status" hidden></p>
 
             <label>
               Full Name
@@ -489,6 +493,25 @@
       window.addEventListener("hashchange", function () {
         showRoute(true);
       });
+
+      // Show a thank-you / error message after the contact form is submitted.
+      // The form posts to contact.php, which redirects back here with
+      // ?status=sent or ?status=error in the URL.
+      const contactStatus = document.getElementById("contactStatus");
+
+      if (contactStatus) {
+        const status = new URLSearchParams(window.location.search).get("status");
+
+        if (status === "sent") {
+          contactStatus.textContent =
+            "Thank you! Your message has been sent. We will get back to you soon.";
+          contactStatus.hidden = false;
+        } else if (status === "error") {
+          contactStatus.textContent =
+            "Sorry, something went wrong. Please try again or email us directly.";
+          contactStatus.hidden = false;
+        }
+      }
     });
     function setHeaderOffset() {
     const header = document.querySelector(".site-header");

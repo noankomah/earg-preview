@@ -5,75 +5,65 @@ declare(strict_types=1);
 require_once __DIR__ . '/admin/includes/db.php';
 require_once __DIR__ . '/admin/includes/content_helpers.php';
 
-$slug = trim((string) ($_GET['slug'] ?? ''));
-$publication = null;
+// Fetch the published founder story (single record).
+$story = null;
+$sections = [];
 $errorMessage = '';
 
-if ($slug === '') {
-    http_response_code(404);
-    $errorMessage = 'The requested publication could not be found.';
-} else {
-    try {
-        $pdo = db();
+try {
+    $pdo = db();
 
-        $statement = $pdo->prepare(
-            "
-            SELECT
-                title,
-                slug,
-                publication_type,
-                summary,
-                full_content,
-                author,
-                publication_date,
-                cover_image,
-                document_link,
-                is_featured,
-                created_at,
-                updated_at
-            FROM publications
-            WHERE slug = :slug
-              AND is_published = 1
-            LIMIT 1
-            "
-        );
+    $statement = $pdo->query("
+        SELECT
+            founder_name,
+            role_title,
+            photo_url,
+            sections,
+            created_at,
+            updated_at
+        FROM founder_story
+        WHERE is_published = 1
+        LIMIT 1
+    ");
 
-        $statement->execute([
-            ':slug' => $slug,
-        ]);
+    $story = $statement->fetch();
 
-        $publication = $statement->fetch();
+    if (!$story) {
+        http_response_code(404);
+        $errorMessage = 'The founder story is not available yet.';
+    } else {
+        // Sections are stored as JSON: [{ "heading": "...", "body": "..." }].
+        // Older single-block rich text content is shown as one section.
+        $rawSections = $story['sections'];
 
-        if (!$publication) {
-            http_response_code(404);
-            $errorMessage = 'The requested publication could not be found.';
+        if ($rawSections !== null && trim((string) $rawSections) !== '') {
+            $decoded = json_decode((string) $rawSections, true);
+
+            if (is_array($decoded)) {
+                foreach ($decoded as $section) {
+                    $sections[] = [
+                        'heading' => (string) ($section['heading'] ?? ''),
+                        'body' => (string) ($section['body'] ?? ''),
+                    ];
+                }
+            } else {
+                $sections[] = [
+                    'heading' => '',
+                    'body' => (string) $rawSections,
+                ];
+            }
         }
-    } catch (Throwable $exception) {
-        error_log('Public publication page error: ' . $exception->getMessage());
-
-        http_response_code(500);
-        $errorMessage = 'This publication cannot be displayed at the moment.';
     }
+} catch (Throwable $exception) {
+    error_log('Public founder story page error: ' . $exception->getMessage());
+
+    http_response_code(500);
+    $errorMessage = 'This page cannot be displayed at the moment.';
 }
 
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
-function format_publication_date(?string $date): string
-{
-    if ($date === null || $date === '') {
-        return 'Not specified';
-    }
-
-    $timestamp = strtotime($date);
-
-    if ($timestamp === false) {
-        return $date;
-    }
-
-    return date('j F Y', $timestamp);
 }
 ?>
 <!DOCTYPE html>
@@ -83,22 +73,19 @@ function format_publication_date(?string $date): string
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        <?= $publication
-            ? e((string) $publication['title']) . ' | EA Research Group'
-            : 'Publication Not Found | EA Research Group'
+        <?= $story
+            ? 'Founder\'s Story | EA Research Group'
+            : 'Founder Story Not Found | EA Research Group'
         ?>
     </title>
 
     <meta
         name="description"
-        content="<?= $publication
-            ? e((string) $publication['summary'])
-            : 'EA Research Group publication.'
-        ?>"
+        content="The story behind <?= $story ? e((string) $story['founder_name']) : 'EA Research Group' ?>, founder of EA Research Group."
     >
 
     <link rel="stylesheet" href="assets/css/about.css?v=2">
-    <link rel="stylesheet" href="assets/css/publications.css?v=4">
+    <link rel="stylesheet" href="assets/css/publications.css?v=5">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -108,7 +95,7 @@ function format_publication_date(?string $date): string
 
             <a href="index.html" class="brand" aria-label="EA Research Group home">
                 <img
-                    src="assets/images/earg-logo.png"
+                    src="assets/images/earg-logo-transparent.png"
                     alt="EA Research Group Logo"
                     class="brand-logo"
                 >
@@ -182,88 +169,57 @@ function format_publication_date(?string $date): string
         </div>
     </header>
 
-    <main class="publication-detail-page">
-        <section class="publication-route">
+    <main class="about-route publication-route founder-story-page">
+        <section class="about-route publication-route">
             <div class="container">
 
-                <a
-                    href="publications.html"
-                    class="publication-back-link"
-                    id="publication-back-link"
-                >
-                    ← Back to publications
-                </a>
+                <?php if ($story): ?>
 
-                <?php if ($publication): ?>
+                    <article class="founder-story-card">
 
-                    <article class="publication-detail-card">
-
-                        <div class="publication-detail-heading">
-                            <p class="publication-type">
-                                <?= e((string) $publication['publication_type']) ?>
-                            </p>
-
-                            <?php if ((int) $publication['is_featured'] === 1): ?>
-                                <span class="publication-featured-badge">
-                                    Featured
-                                </span>
-                            <?php endif; ?>
+                        <div class="founder-story-heading">
+                            <p class="publication-type">Founder's Story</p>
                         </div>
 
-                        <h1><?= e((string) $publication['title']) ?></h1>
-
-                        <p class="publication-detail-summary">
-                            <?= e((string) $publication['summary']) ?>
-                        </p>
-
-                        <div class="publication-detail-meta">
-                            <div>
-                                <strong>Publication type</strong>
-                                <span>
-                                    <?= e((string) $publication['publication_type']) ?>
-                                </span>
-                            </div>
-
-                            <div>
-                                <strong>Publication date</strong>
-                                <span>
-                                    <?= e(format_publication_date(
-                                        $publication['publication_date']
-                                    )) ?>
-                                </span>
-                            </div>
-
-                            <?php if (!empty($publication['author'])): ?>
-                                <div>
-                                    <strong>Author</strong>
-                                    <span><?= e((string) $publication['author']) ?></span>
+                        <div class="founder-story-grid">
+                            <?php if (!empty($story['photo_url'])): ?>
+                                <div class="founder-story-photo">
+                                    <img
+                                        src="<?= e((string) $story['photo_url']) ?>"
+                                        alt="Photo of <?= e((string) $story['founder_name']) ?>"
+                                    >
                                 </div>
                             <?php endif; ?>
+
+                            <div class="founder-story-main">
+                                <h1><?= e((string) $story['founder_name']) ?></h1>
+
+                                <?php if (!empty($story['role_title'])): ?>
+                                    <p class="founder-story-role">
+                                        <?= e((string) $story['role_title']) ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
                         </div>
 
-                        <?php if (!empty($publication['cover_image'])): ?>
-                            <img
-                                src="<?= e((string) $publication['cover_image']) ?>"
-                                alt="<?= e((string) $publication['title']) ?>"
-                                class="publication-cover-image"
-                            >
-                        <?php endif; ?>
+                        <?php if ($sections): ?>
+                            <div class="founder-story-sections">
+                                <?php foreach ($sections as $section): ?>
+                                    <?php if ($section['heading'] === '' && $section['body'] === ''): ?>
+                                        <?php continue; ?>
+                                    <?php endif; ?>
 
-                        <div class="publication-detail-body">
-                            <?= sanitize_rich_text(
-                                (string) $publication['full_content']
-                            ) ?>
-                        </div>
+                                    <section class="founder-story-section">
+                                        <?php if ($section['heading'] !== ''): ?>
+                                            <h2><?= e($section['heading']) ?></h2>
+                                        <?php endif; ?>
 
-                        <?php if (!empty($publication['document_link'])): ?>
-                            <a
-                                href="<?= e((string) $publication['document_link']) ?>"
-                                class="publication-document-button"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Open document
-                            </a>
+                                        <div class="founder-story-body">
+                                            <?= sanitize_rich_text($section['body']) ?>
+                                        </div>
+                                    </section>
+                                <?php endforeach; ?>
+                            </div>
                         <?php endif; ?>
 
                     </article>
@@ -271,7 +227,7 @@ function format_publication_date(?string $date): string
                 <?php else: ?>
 
                     <section class="opportunity-state opportunity-error-state">
-                        <h1>Publication not found</h1>
+                        <h1>Founder story not available</h1>
                         <p><?= e($errorMessage) ?></p>
                     </section>
 
@@ -302,6 +258,7 @@ function format_publication_date(?string $date): string
                 <a href="about.html#who-we-are">Who We Are</a>
                 <a href="about.html#governing-board">Governing Board</a>
                 <a href="about.html#our-team">Our Team</a>
+                <a href="founder-story.php">Founder's Story</a>
                 <a href="about.html#contact-us">Contact Us</a>
             </div>
 
@@ -330,26 +287,6 @@ function format_publication_date(?string $date): string
 
             if (year) {
                 year.textContent = new Date().getFullYear();
-            }
-
-            const publicationType =
-                <?= json_encode(
-                    $publication['publication_type'] ?? '',
-                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-                ) ?>;
-
-            const backLink = document.getElementById("publication-back-link");
-
-            if (backLink) {
-                const routeMap = {
-                    Blog: "blogs",
-                    Newsletter: "newsletters",
-                    Report: "reports"
-                };
-
-                const route = routeMap[publicationType] || "blogs";
-
-                backLink.href = `publications.html#${route}`;
             }
 
             const dropdownButtons = document.querySelectorAll(".nav-parent");

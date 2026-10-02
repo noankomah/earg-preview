@@ -146,7 +146,21 @@ function format_public_date(?string $date): string
                         <a href="about.html#who-we-are">Who We Are</a>
                         <a href="about.html#governing-board">Governing Board</a>
                         <a href="about.html#our-team">Our Team</a>
+                        <a href="founder-story.php">Founder's Story</a>
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
                         <a href="about.html#contact-us">Contact Us</a>
+                    </div>
+                </div>
+
+                <div class="nav-dropdown">
+                    <button type="button" class="nav-parent">Programs</button>
+
+                    <div class="dropdown-menu">
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Mentorship and Fellowship</a>
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Research Capacity</a>
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Community Research</a>
+                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Consultancy and Partnerships</a>
                     </div>
                 </div>
 
@@ -162,6 +176,8 @@ function format_public_date(?string $date): string
                         </a>
                     </div>
                 </div>
+
+                <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Events</a>
             </nav>
 
         </div>
