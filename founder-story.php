@@ -133,8 +133,9 @@ function e(string $value): string
                         <a href="about.html#governing-board">Governing Board</a>
                         <a href="about.html#our-team">Our Team</a>
                         <a href="founder-story.php">Founder's Story</a>
-                        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
+                        <!--   <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
                         <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
+                        -->
                         <a href="about.html#contact-us">Contact Us</a>
                     </div>
                 </div>
