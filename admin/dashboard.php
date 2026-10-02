@@ -15,14 +15,28 @@ $stats = [
     'opportunities' => 0,
     'publications' => 0,
     'messages' => 0,
+    'subscribers' => 0,
+    'founder_story' => 0,
 ];
 
 $stats['opportunities'] = (int) $pdo
     ->query("SELECT COUNT(*) AS total FROM opportunities")
     ->fetch()['total'];
 
+$stats['publications'] = (int) $pdo
+    ->query("SELECT COUNT(*) AS total FROM publications")
+    ->fetch()['total'];
+
 $stats['messages'] = (int) $pdo
     ->query("SELECT COUNT(*) AS total FROM contact_messages WHERE status = 'New'")
+    ->fetch()['total'];
+
+$stats['subscribers'] = (int) $pdo
+    ->query("SELECT COUNT(*) AS total FROM newsletter_subscribers")
+    ->fetch()['total'];
+
+$stats['founder_story'] = (int) $pdo
+    ->query("SELECT COUNT(*) AS total FROM founder_story")
     ->fetch()['total'];
 ?>
 <!DOCTYPE html>
@@ -60,11 +74,23 @@ $stats['messages'] = (int) $pdo
                 <p>Add, edit and manage scholarships, fellowships, internships and calls.</p>
             </a>
 
-            <article class="admin-stat-card">
+            <a class="admin-stat-card admin-stat-card-link" href="messages.php">
                 <span><?= $stats['messages'] ?></span>
                 <h2>New messages</h2>
                 <p>Unread contact messages from the public website.</p>
-            </article>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="subscribers.php">
+                <span><?= $stats['subscribers'] ?></span>
+                <h2>Newsletter subscribers</h2>
+                <p>Emails signed up through the home page newsletter box.</p>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="founder_story.php">
+                <span><?= $stats['founder_story'] ?></span>
+                <h2>Founder story</h2>
+                <p>Edit the founder's story shown on the public website.</p>
+            </a>
 
            <a
                 class="admin-stat-card admin-stat-card-link"

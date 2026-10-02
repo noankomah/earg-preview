@@ -18,4 +18,7 @@ Notes:
 - The hero slider changes every 30 seconds and has manual left/right controls.
 - Newsletter form is wired to newsletter.php which saves emails to the newsletter_subscribers table.
 - The contact form on about.html posts to contact.php which saves messages to the contact_messages table.
+- Founder's Story public page (founder-story.php) is edited in the admin area (admin/founder_story.php); content is stored in the founder_story table.
+- Admin messages inbox (admin/messages.php) lists contact form messages with mark read / archive / delete actions.
+- Admin subscribers list (admin/subscribers.php) shows newsletter signups and can download them as a CSV.
 - Social links and secondary page links are placeholders and should be connected as pages are built.

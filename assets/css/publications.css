@@ -1125,3 +1125,111 @@ main[aria-label="Publications"] .value-card p {
     padding: 20px;
   }
 }
+
+/* =====================================================
+   FOUNDER STORY PAGE
+===================================================== */
+
+.founder-story-card {
+  max-width: 960px;
+  padding: 40px;
+
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--soft-shadow);
+}
+
+.founder-story-heading {
+  margin-bottom: 22px;
+}
+
+.founder-story-grid {
+  display: grid;
+  gap: 34px;
+  align-items: start;
+}
+
+.founder-story-grid:has(.founder-story-photo) {
+  grid-template-columns: 220px minmax(0, 1fr);
+}
+
+.founder-story-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+
+  display: block;
+  object-fit: cover;
+
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.founder-story-main h1 {
+  margin: 0 0 6px;
+
+  color: var(--green-900);
+
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+}
+
+.founder-story-role {
+  margin: 0 0 24px;
+
+  color: var(--gold);
+  font-weight: 900;
+
+  font-size: 1.05rem;
+}
+
+.founder-story-body {
+  color: var(--muted-text);
+  font-size: 1.06rem;
+  line-height: 1.75;
+}
+
+.founder-story-sections {
+  margin-top: 28px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+
+  display: grid;
+  gap: 26px;
+}
+
+.founder-story-section h2 {
+  margin: 0 0 10px;
+
+  color: var(--green-900);
+
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.founder-story-section h2::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 4px;
+  margin-top: 10px;
+
+  background: var(--gold);
+  border-radius: 999px;
+}
+
+@media (max-width: 700px) {
+  .founder-story-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .founder-story-photo img {
+    max-width: 260px;
+  }
+
+  .founder-story-card {
+    padding: 24px;
+    border-radius: 16px;
+  }
+}
