@@ -10,6 +10,8 @@ deployment:
     - /bin/cp opportunity.php $DEPLOYPATH
     - /bin/cp publication.php $DEPLOYPATH
     - /bin/cp founder-story.php $DEPLOYPATH
+    - /bin/cp contact.php $DEPLOYPATH
+    - /bin/cp newsletter.php $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/rm -rf $DEPLOYPATH/api
     - /bin/cp -R api $DEPLOYPATH
