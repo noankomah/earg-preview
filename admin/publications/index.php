@@ -39,17 +39,15 @@ $publications = $statement->fetchAll();
 
 <body class="admin-body">
 
-    <header class="admin-topbar">
-        <div>
-            <strong>EA Research Group</strong>
-            <span>Publications Manager</span>
-        </div>
-
-        <nav class="admin-topnav">
-            <a href="../dashboard.php">Dashboard</a>
-            <a href="../logout.php">Log out</a>
-        </nav>
-    </header>
+    <?php
+    // Details for the shared admin navigation (admin/includes/admin_navbar.php).
+    $adminPage = 'Publications Manager';
+    $adminLinks = array(
+        array('Dashboard', '../dashboard.php'),
+        array('Log out', '../logout.php'),
+    );
+    ?>
+    <?php include __DIR__ . '/../includes/admin_navbar.php'; ?>
 
     <main class="admin-dashboard">
 

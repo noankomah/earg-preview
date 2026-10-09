@@ -6,19 +6,23 @@
   </url>
 
   <url>
-    <loc>https://earesearch.org/about.html</loc>
+    <loc>https://earesearch.org/about.php</loc>
   </url>
 
   <url>
-    <loc>https://earesearch.org/programs.html</loc>
+    <loc>https://earesearch.org/programs.php</loc>
   </url>
 
   <url>
-    <loc>https://earesearch.org/publications.html</loc>
+    <loc>https://earesearch.org/publications.php</loc>
   </url>
 
   <url>
-    <loc>https://earesearch.org/events.html</loc>
+    <loc>https://earesearch.org/events.php</loc>
+  </url>
+
+  <url>
+    <loc>https://earesearch.org/founder-story.php</loc>
   </url>
 
 </urlset>

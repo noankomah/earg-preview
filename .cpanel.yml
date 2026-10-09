@@ -2,16 +2,19 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/earesearch/public_html/
-    - /bin/cp index.html $DEPLOYPATH
-    - /bin/cp about.html $DEPLOYPATH
-    - /bin/cp events.html $DEPLOYPATH
-    - /bin/cp programs.html $DEPLOYPATH
-    - /bin/cp publications.html $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp about.php $DEPLOYPATH
+    - /bin/cp events.php $DEPLOYPATH
+    - /bin/cp programs.php $DEPLOYPATH
+    - /bin/cp publications.php $DEPLOYPATH
     - /bin/cp opportunity.php $DEPLOYPATH
     - /bin/cp publication.php $DEPLOYPATH
     - /bin/cp founder-story.php $DEPLOYPATH
     - /bin/cp contact.php $DEPLOYPATH
     - /bin/cp newsletter.php $DEPLOYPATH
+    - /bin/cp -R includes $DEPLOYPATH
+    # The old static .html pages are no longer used (the pages are PHP now).
+    - /bin/rm -f $DEPLOYPATH/index.html $DEPLOYPATH/about.html $DEPLOYPATH/events.html $DEPLOYPATH/programs.html $DEPLOYPATH/publications.html
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/rm -rf $DEPLOYPATH/api
     - /bin/cp -R api $DEPLOYPATH

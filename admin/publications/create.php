@@ -156,17 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body class="admin-body">
 
-    <header class="admin-topbar">
-        <div>
-            <strong>EA Research Group</strong>
-            <span>Add Publication</span>
-        </div>
-
-        <nav class="admin-topnav">
-            <a href="index.php">Back to publications</a>
-            <a href="../logout.php">Log out</a>
-        </nav>
-    </header>
+    <?php
+    // Details for the shared admin navigation (admin/includes/admin_navbar.php).
+    $adminPage = 'Add Publication';
+    $adminLinks = array(
+        array('Back to publications', 'index.php'),
+        array('Log out', '../logout.php'),
+    );
+    ?>
+    <?php include __DIR__ . '/../includes/admin_navbar.php'; ?>
 
     <main class="admin-dashboard">
         <section class="admin-form-card">

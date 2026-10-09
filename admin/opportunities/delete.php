@@ -60,17 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="admin-body">
 
-    <header class="admin-topbar">
-        <div>
-            <strong>EA Research Group</strong>
-            <span>Delete Opportunity</span>
-        </div>
-
-        <nav class="admin-topnav">
-            <a href="index.php">Back to opportunities</a>
-            <a href="../logout.php">Log out</a>
-        </nav>
-    </header>
+    <?php
+    // Details for the shared admin navigation (admin/includes/admin_navbar.php).
+    $adminPage = 'Delete Opportunity';
+    $adminLinks = array(
+        array('Back to opportunities', 'index.php'),
+        array('Log out', '../logout.php'),
+    );
+    ?>
+    <?php include __DIR__ . '/../includes/admin_navbar.php'; ?>
 
     <main class="admin-dashboard">
         <section class="admin-form-card danger-zone">

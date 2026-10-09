@@ -40,79 +40,7 @@
 
 <body>
   <!-- HEADER -->
-  <header class="site-header" x-data="{ open: false }">
-    <div class="container header-inner">
-
-      <a href="index.html" class="brand" aria-label="EA Research Group home">
-        <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="brand-logo" />
-        <span class="brand-text">
-          <strong>EA Research Group</strong>
-          <small>Research • Mentorship • Innovation • Impact</small>
-        </span>
-      </a>
-
-      <button class="menu-toggle" @click="open = !open" :aria-expanded="open.toString()" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      <nav class="main-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-
-        <div class="nav-dropdown">
-          <button type="button" class="nav-parent">About Us</button>
-          <div class="dropdown-menu">
-            <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
-            <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
-            <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
-            <a href="founder-story.php">Founder's Story</a>
-            
-          <!--   <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Work With Us</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Our Partners</a>
-          -->
-            <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
-          </div>
-        </div>
-          <div class="nav-dropdown">
-          <button type="button" class="nav-parent">Programs</button>
-          <div class="dropdown-menu">
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Mentorship and Fellowship</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Research Capacity</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Community Research</a>
-            <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Consultancy and Partnerships</a>
-          </div>
-        </div>
-
-       <div class="nav-dropdown">
-        <button type="button" class="nav-parent">Publications</button>
-
-        <div class="dropdown-menu">
-          <a href="publications.html#blogs" data-route-link="blogs">
-            Blogs
-          </a>
-
-          <a href="publications.html#newsletters" data-route-link="newsletters">
-            Newsletters
-          </a>
-
-          <a href="publications.html#reports" data-route-link="reports">
-            Reports
-          </a>
-
-          <a href="publications.html#scholarship-opportunities" data-route-link="scholarship-opportunities">
-            Scholarship & Opportunities
-          </a>
-        </div>
-      </div>
-
-
-
-        <a href="#" class="inactive-link" aria-disabled="true" onclick="return false;">Events</a>
-      </nav>
-
-    </div>
-  </header>
+  <?php include __DIR__ . '/includes/navbar.php'; ?>
 
   <main>
     <!-- FULL-WIDTH HERO SLIDER -->
@@ -156,8 +84,8 @@
           </p>
 
           <div class="who-actions">
-            <a href="who-we-are.html" class="btn btn-primary">Learn More</a>
-            <a href="work-with-us.html" class="btn btn-secondary">Work With Us</a>
+            <a href="about.php#who-we-are" class="btn btn-primary">Learn More</a>
+            <a href="about.php#contact-us" class="btn btn-secondary">Work With Us</a>
           </div>
         </div>
 
@@ -265,7 +193,7 @@
               graduates and early-career researchers.
             </p>
 
-            <a href="publications.html#scholarship-opportunities">
+            <a href="publications.php#scholarship-opportunities">
               Explore opportunities →
             </a>
           </article>
@@ -281,7 +209,7 @@
               innovation and community development.
             </p>
 
-            <a href="publications.html#blogs">
+            <a href="publications.php#blogs">
               Read our blogs →
             </a>
           </article>
@@ -296,7 +224,7 @@
               research activities and institutional development.
             </p>
 
-            <a href="publications.html#newsletters">
+            <a href="publications.php#newsletters">
               Read our newsletters →
             </a>
           </article>
@@ -326,42 +254,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="logo-text">
-        <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="footer-logo" />
-        <p>
-          Effective Altruist Research Group is a non-profit research and academic
-          development organization advancing research, mentorship, innovation and impact.
-        </p>
-      </div>
-
-      <div>
-        <h4>Quick Links</h4>
-        <a href="about.html#who-we-are" data-route-link="who-we-are">Who We Are</a>
-        <a href="about.html#governing-board" data-route-link="governing-board">Governing Board</a>
-        <a href="about.html#our-team" data-route-link="our-team">Our Team</a>
-        <a href="about.html#contact-us" data-route-link="contact-us">Contact Us</a>
-      </div>
-
-      <div>
-        <h4>Find Us</h4>
-        <p>Tamale, Northern Region, Ghana</p>
-        <p><a href="mailto:earesearchgrp24@gmail.com">earesearchgrp24@gmail.com</a></p>
-
-        <h4 class="follow-heading">Follow Us</h4>
-        <div class="social-links">
-          <a href="#">Facebook</a>
-          <a href="https://www.linkedin.com/in/ea-research-group-earg-298a9440b" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href=" https://youtube.com/@earesearchgrp24?si=FRm8RPLxO82BLVHR" target="_blank" rel="noopener noreferrer">YouTube</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>© <span id="year"></span> EA Research Group. All rights reserved.</p>
-    </div>
-  </footer>
+  <?php include __DIR__ . '/includes/footer.php'; ?>
 
   <script src="assets/js/index.js"></script>
 </body>
