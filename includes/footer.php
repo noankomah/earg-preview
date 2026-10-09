@@ -39,7 +39,7 @@
             <div class="social-links">
                 <a href="#">Facebook</a>
                 <a href="https://www.linkedin.com/in/ea-research-group-earg-298a9440b" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href=" https://youtube.com/@earesearchgrp24?si=FRm8RPLxO82BLVHR" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://youtube.com/@earesearchgrp24?si=FRm8RPLxO82BLVHR" target="_blank" rel="noopener noreferrer">YouTube</a>
             </div>
         </div>
     </div>
