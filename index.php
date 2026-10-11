@@ -43,8 +43,10 @@
   <?php include __DIR__ . '/includes/navbar.php'; ?>
 
   <main>
-    <!-- FULL-WIDTH HERO SLIDER -->
-   <!-- FULL-WIDTH HERO SLIDER -->
+    <!-- FULL-WIDTH HERO SLIDER:
+         The slides are built from assets/images/hero_images/images.json by
+         assets/js/index.js. The first slide (index 0) is the EA logo image
+         and is the active/opening slide on page load. -->
     <section class="hero-slider" aria-label="EA Research Group highlights">
       <div class="slide-stage" id="heroSlider"></div>
 

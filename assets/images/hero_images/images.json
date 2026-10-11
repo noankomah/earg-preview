@@ -1,6 +1,7 @@
 [
   {
-    "src": "assets/images/hero_images/earg-logo-transparent.png",
+    "_comment": "Hero slider images. Array order = slide order; the first entry is shown first and starts as the active slide. 'position' is the CSS background-position. The EA logo slide below was added as the opening slide.",
+    "src": "assets/images/hero_images/ea-logo-green.jpg",
     "position": "center 45%"
   },
   {
