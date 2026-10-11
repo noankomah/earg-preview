@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/admin/includes/db.php';
 require_once __DIR__ . '/admin/includes/content_helpers.php';
+require_once __DIR__ . '/admin/includes/publication_helpers.php';
 
 $slug = trim((string) ($_GET['slug'] ?? ''));
 $publication = null;
@@ -27,6 +28,7 @@ if ($slug === '') {
                 author,
                 publication_date,
                 cover_image,
+                gallery_images,
                 document_link,
                 is_featured,
                 created_at,
@@ -75,6 +77,23 @@ function format_publication_date(?string $date): string
 
     return date('j F Y', $timestamp);
 }
+
+// Images shown on the page. New publications store several uploaded images in
+// gallery_images (JSON), but older records may only have a single cover image.
+$gallery = [];
+$lightboxImages = [];
+
+if ($publication) {
+    $gallery = decode_publication_gallery(
+        $publication['gallery_images'] ?? null
+    );
+
+    if ($gallery !== []) {
+        $lightboxImages = $gallery;
+    } elseif (!empty($publication['cover_image'])) {
+        $lightboxImages = [(string) $publication['cover_image']];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +117,7 @@ function format_publication_date(?string $date): string
     >
 
     <link rel="stylesheet" href="assets/css/about.css?v=2">
-    <link rel="stylesheet" href="assets/css/publications.css?v=4">
+    <link rel="stylesheet" href="assets/css/publications.css?v=5">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -164,12 +183,47 @@ function format_publication_date(?string $date): string
                             <?php endif; ?>
                         </div>
 
-                        <?php if (!empty($publication['cover_image'])): ?>
-                            <img
-                                src="<?= e((string) $publication['cover_image']) ?>"
-                                alt="<?= e((string) $publication['title']) ?>"
-                                class="publication-cover-image"
+                        <?php if ($lightboxImages): ?>
+                            <div
+                                class="publication-gallery-root"
+                                id="publication-gallery-root"
+                                data-images="<?= e(json_encode(
+                                    $lightboxImages,
+                                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                                )) ?>"
                             >
+                                <?php if ($gallery): ?>
+                                    <div class="publication-gallery">
+                                        <?php foreach ($gallery as $index => $imagePath): ?>
+                                            <button
+                                                type="button"
+                                                class="publication-gallery-thumb publication-gallery-zoom"
+                                                data-index="<?= (int) $index ?>"
+                                                aria-label="Zoom image <?= $index + 1 ?>"
+                                            >
+                                                <img
+                                                    src="<?= e($imagePath) ?>"
+                                                    alt="<?= e((string) $publication['title']) ?>"
+                                                    loading="lazy"
+                                                >
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php elseif (!empty($publication['cover_image'])): ?>
+                                    <button
+                                        type="button"
+                                        class="publication-cover-zoom publication-gallery-zoom"
+                                        data-index="0"
+                                        aria-label="Zoom image"
+                                    >
+                                        <img
+                                            src="<?= e((string) $publication['cover_image']) ?>"
+                                            alt="<?= e((string) $publication['title']) ?>"
+                                            class="publication-cover-image"
+                                        >
+                                    </button>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
 
                         <div class="publication-detail-body">
@@ -203,6 +257,44 @@ function format_publication_date(?string $date): string
             </div>
         </section>
     </main>
+
+    <?php if ($lightboxImages): ?>
+        <div
+            class="publication-lightbox"
+            id="publication-lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Image viewer"
+            hidden
+        >
+            <button
+                type="button"
+                class="publication-lightbox-close"
+                id="publication-lightbox-close"
+                aria-label="Close image viewer"
+            >&times;</button>
+
+            <?php if (count($lightboxImages) > 1): ?>
+                <button
+                    type="button"
+                    class="publication-lightbox-nav publication-lightbox-prev"
+                    id="publication-lightbox-prev"
+                    aria-label="Previous image"
+                >&lsaquo;</button>
+
+                <button
+                    type="button"
+                    class="publication-lightbox-nav publication-lightbox-next"
+                    id="publication-lightbox-next"
+                    aria-label="Next image"
+                >&rsaquo;</button>
+            <?php endif; ?>
+
+            <figure class="publication-lightbox-figure">
+                <img id="publication-lightbox-img" src="" alt="">
+            </figure>
+        </div>
+    <?php endif; ?>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
 
@@ -247,6 +339,86 @@ function format_publication_date(?string $date): string
                     }
                 });
             });
+
+            const galleryRoot = document.getElementById("publication-gallery-root");
+
+            if (galleryRoot) {
+                let galleryImages = [];
+
+                try {
+                    galleryImages = JSON.parse(galleryRoot.dataset.images) || [];
+                } catch (e) {
+                    galleryImages = [];
+                }
+
+                const lightbox = document.getElementById("publication-lightbox");
+                const lightboxImg = document.getElementById("publication-lightbox-img");
+                const closeBtn = document.getElementById("publication-lightbox-close");
+                const prevBtn = document.getElementById("publication-lightbox-prev");
+                const nextBtn = document.getElementById("publication-lightbox-next");
+                let activeIndex = 0;
+
+                function openLightbox(index) {
+                    if (!lightbox || !galleryImages.length) return;
+
+                    activeIndex = (index + galleryImages.length) % galleryImages.length;
+
+                    lightboxImg.src = galleryImages[activeIndex];
+                    lightboxImg.alt = "Viewing image " + (activeIndex + 1) + " of " + galleryImages.length;
+                    lightbox.hidden = false;
+                    document.body.style.overflow = "hidden";
+                }
+
+                function closeLightbox() {
+                    if (!lightbox) return;
+
+                    lightbox.hidden = true;
+                    document.body.style.overflow = "";
+                }
+
+                if (closeBtn) {
+                    closeBtn.addEventListener("click", closeLightbox);
+                }
+
+                if (prevBtn) {
+                    prevBtn.addEventListener("click", function () {
+                        openLightbox(activeIndex - 1);
+                    });
+                }
+
+                if (nextBtn) {
+                    nextBtn.addEventListener("click", function () {
+                        openLightbox(activeIndex + 1);
+                    });
+                }
+
+                // Clicking the dark area outside the image closes the viewer.
+                if (lightbox) {
+                    lightbox.addEventListener("click", function (event) {
+                        if (event.target === lightbox || event.target === lightboxImg) {
+                            closeLightbox();
+                        }
+                    });
+                }
+
+                document.addEventListener("keydown", function (event) {
+                    if (!lightbox || lightbox.hidden) return;
+
+                    if (event.key === "Escape") {
+                        closeLightbox();
+                    } else if (event.key === "ArrowLeft" && prevBtn) {
+                        openLightbox(activeIndex - 1);
+                    } else if (event.key === "ArrowRight" && nextBtn) {
+                        openLightbox(activeIndex + 1);
+                    }
+                });
+
+                galleryRoot.querySelectorAll(".publication-gallery-zoom").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        openLightbox(Number(button.dataset.index || 0));
+                    });
+                });
+            }
         });
     </script>
 </body>
