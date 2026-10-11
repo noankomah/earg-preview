@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentSlide = 0;
   let slideInterval;
 
+  // The hero slider is populated from assets/images/hero_images/images.json,
+  // an array of { "src": "...", "position": "..." } slides shown in array
+  // order. The first entry is the EA logo slide (added as the opening slide).
   fetch("assets/images/hero_images/images.json")
     .then(function (response) {
       return response.json();
