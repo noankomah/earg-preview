@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/publication_helpers.php';
 
 require_admin();
 
@@ -21,7 +22,9 @@ $statement = $pdo->prepare(
     SELECT
         id,
         title,
-        publication_type
+        publication_type,
+        cover_image,
+        gallery_images
     FROM publications
     WHERE id = :id
     LIMIT 1
@@ -47,6 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!$errors) {
+        // Remove the uploaded image files from the uploads folder first.
+        delete_publication_image((string) ($publication['cover_image'] ?? ''));
+
+        foreach (
+            decode_publication_gallery($publication['gallery_images'] ?? null)
+            as $imagePath
+        ) {
+            delete_publication_image($imagePath);
+        }
+
         $delete = $pdo->prepare(
             "
             DELETE FROM publications

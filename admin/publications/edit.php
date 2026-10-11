@@ -69,14 +69,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data['publication_date'] = trim(
         (string) ($_POST['publication_date'] ?? '')
     );
-    $data['cover_image'] = trim(
-        (string) ($_POST['cover_image'] ?? '')
-    );
     $data['document_link'] = trim(
         (string) ($_POST['document_link'] ?? '')
     );
     $data['is_published'] = isset($_POST['is_published']) ? '1' : '0';
     $data['is_featured'] = isset($_POST['is_featured']) ? '1' : '0';
+
+    // Handle the image gallery. Existing images can each be marked for
+    // removal (their files are deleted from the uploads folder), and new
+    // images can be uploaded at the same time.
+    $existingGallery = decode_publication_gallery(
+        $publication['gallery_images'] ?? null
+    );
+
+    $removeGallery = isset($_POST['remove_gallery'])
+        ? (array) $_POST['remove_gallery']
+        : [];
+
+    $kept = [];
+
+    foreach ($existingGallery as $imagePath) {
+        if (in_array($imagePath, $removeGallery, true)) {
+            delete_publication_image($imagePath);
+        } else {
+            $kept[] = $imagePath;
+        }
+    }
+
+    $added = [];
+
+    if (!empty($_FILES['gallery_images']['name'])) {
+        $files = $_FILES['gallery_images'];
+
+        foreach ($files['name'] as $index => $name) {
+            if ($files['error'][$index] === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $result = handle_publication_image_upload([
+                'name' => $files['name'][$index],
+                'type' => $files['type'][$index],
+                'tmp_name' => $files['tmp_name'][$index],
+                'error' => $files['error'][$index],
+                'size' => $files['size'][$index],
+            ]);
+
+            if ($result['success']) {
+                $added[] = $result['path'];
+            } else {
+                $errors[] = $result['error'];
+            }
+        }
+    }
+
+    $gallery = array_values(array_merge($kept, $added));
+    $hasImageChanges = $removeGallery !== [] || $added !== [];
+
+    if ($gallery === [] && !$hasImageChanges) {
+        // The images were not touched: keep the stored gallery and the
+        // existing cover image unchanged (legacy link-based covers stay intact).
+        $galleryJson = $publication['gallery_images'];
+        $data['cover_image'] = (string) $publication['cover_image'];
+    } else {
+        // The first image in the gallery is always the cover image shown on
+        // the listing pages.
+        $galleryJson = $gallery === []
+            ? null
+            : json_encode($gallery, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $data['cover_image'] = $gallery[0] ?? '';
+    }
 
     if ($data['title'] === '') {
         $errors[] = 'Title is required.';
@@ -96,13 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data['full_content'] === '') {
         $errors[] = 'Full content is required.';
-    }
-
-    if (
-        $data['cover_image'] !== '' &&
-        !filter_var($data['cover_image'], FILTER_VALIDATE_URL)
-    ) {
-        $errors[] = 'Cover image must be a valid URL.';
     }
 
     if (
@@ -142,6 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 author = :author,
                 publication_date = :publication_date,
                 cover_image = :cover_image,
+                gallery_images = :gallery_images,
                 document_link = :document_link,
                 is_published = :is_published,
                 is_featured = :is_featured
@@ -162,6 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':cover_image' => $data['cover_image'] !== ''
                 ? $data['cover_image']
                 : null,
+            ':gallery_images' => $galleryJson,
             ':document_link' => $data['document_link'] !== ''
                 ? $data['document_link']
                 : null,
@@ -216,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <form method="post" class="admin-form admin-wide-form">
+            <form method="post" class="admin-form admin-wide-form" enctype="multipart/form-data">
                 <input
                     type="hidden"
                     name="csrf_token"
@@ -298,14 +354,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </label>
                 </div>
 
+                <?php $existingGallery = decode_publication_gallery(
+                    $publication['gallery_images'] ?? null
+                ); ?>
+
+                <?php if ($existingGallery): ?>
+                    <div class="admin-image-gallery">
+                        <p class="admin-muted">
+                            Currently uploaded images (tick one to remove it):
+                        </p>
+                        <?php foreach ($existingGallery as $imagePath): ?>
+                            <label class="admin-image-check">
+                                <input
+                                    type="checkbox"
+                                    name="remove_gallery[]"
+                                    value="<?= e($imagePath) ?>"
+                                >
+                                <img
+                                    src="../../<?= e($imagePath) ?>"
+                                    alt=""
+                                >
+                                <span>Remove</span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
                 <label>
-                    Cover image URL
+                    Add more images
                     <input
-                        type="url"
-                        name="cover_image"
-                        value="<?= e($data['cover_image']) ?>"
+                        type="file"
+                        name="gallery_images[]"
+                        multiple
+                        accept="image/png,image/jpeg,image/webp,image/gif"
                     >
                 </label>
+
+                <p class="admin-muted">
+                    You can add several images at once. The first image doubles
+                    as the cover image on the listing pages. Visitors can click
+                    any image on the page to zoom in.
+                </p>
 
                 <label>
                     Document link

@@ -36,10 +36,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data['full_content'] = sanitize_rich_text((string) ($_POST['full_content'] ?? ''));
     $data['author'] = trim((string) ($_POST['author'] ?? ''));
     $data['publication_date'] = trim((string) ($_POST['publication_date'] ?? ''));
-    $data['cover_image'] = trim((string) ($_POST['cover_image'] ?? ''));
     $data['document_link'] = trim((string) ($_POST['document_link'] ?? ''));
     $data['is_published'] = isset($_POST['is_published']) ? '1' : '0';
     $data['is_featured'] = isset($_POST['is_featured']) ? '1' : '0';
+
+    // Images are uploaded from the local machine (multiple allowed). The first
+    // uploaded image also becomes the cover image shown on the listing pages.
+    $gallery = [];
+
+    if (!empty($_FILES['gallery_images']['name'])) {
+        $files = $_FILES['gallery_images'];
+
+        foreach ($files['name'] as $index => $name) {
+            if ($files['error'][$index] === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $result = handle_publication_image_upload([
+                'name' => $files['name'][$index],
+                'type' => $files['type'][$index],
+                'tmp_name' => $files['tmp_name'][$index],
+                'error' => $files['error'][$index],
+                'size' => $files['size'][$index],
+            ]);
+
+            if ($result['success']) {
+                $gallery[] = $result['path'];
+            } else {
+                $errors[] = $result['error'];
+            }
+        }
+    }
+
+    $data['gallery_images'] = $gallery;
+    $data['cover_image'] = $gallery[0] ?? '';
 
     if ($data['title'] === '') {
         $errors[] = 'Title is required.';
@@ -55,13 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data['full_content'] === '') {
         $errors[] = 'Full content is required.';
-    }
-
-    if (
-        $data['cover_image'] !== '' &&
-        !filter_var($data['cover_image'], FILTER_VALIDATE_URL)
-    ) {
-        $errors[] = 'Cover image must be a valid URL.';
     }
 
     if (
@@ -96,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 author,
                 publication_date,
                 cover_image,
+                gallery_images,
                 document_link,
                 is_published,
                 is_featured
@@ -109,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 :author,
                 :publication_date,
                 :cover_image,
+                :gallery_images,
                 :document_link,
                 :is_published,
                 :is_featured
@@ -129,6 +154,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':cover_image' => $data['cover_image'] !== ''
                 ? $data['cover_image']
                 : null,
+            ':gallery_images' => $gallery === []
+                ? null
+                : json_encode($gallery, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
             ':document_link' => $data['document_link'] !== ''
                 ? $data['document_link']
                 : null,
@@ -179,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <form method="post" class="admin-form admin-wide-form">
+            <form method="post" class="admin-form admin-wide-form" enctype="multipart/form-data">
                 <input
                     type="hidden"
                     name="csrf_token"
@@ -262,14 +290,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <label>
-                    Cover image URL
+                    Images
                     <input
-                        type="url"
-                        name="cover_image"
-                        value="<?= e($data['cover_image']) ?>"
-                        placeholder="https://example.org/image.jpg"
+                        type="file"
+                        name="gallery_images[]"
+                        multiple
+                        accept="image/png,image/jpeg,image/webp,image/gif"
                     >
                 </label>
+
+                <p class="admin-muted">
+                    You can select several images. The first image doubles as the
+                    cover image on the listing pages. Visitors can click any
+                    image on the page to zoom in.
+                </p>
 
                 <label>
                     Document link
