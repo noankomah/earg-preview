@@ -359,11 +359,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ); ?>
 
                 <?php if ($existingGallery): ?>
-                    <p class="admin-muted">
-                        Currently uploaded images (tick one to remove it):
-                    </p>
-
                     <div class="admin-image-gallery">
+                        <p class="admin-muted">
+                            Currently uploaded images (tick one to remove it):
+                        </p>
                         <?php foreach ($existingGallery as $imagePath): ?>
                             <label class="admin-image-check">
                                 <input
@@ -390,12 +389,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         accept="image/png,image/jpeg,image/webp,image/gif"
                     >
                 </label>
-
-                <div
-                    class="admin-image-preview-grid"
-                    id="new-image-preview"
-                    hidden
-                ></div>
 
                 <p class="admin-muted">
                     You can add several images at once. The first image doubles

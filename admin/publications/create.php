@@ -299,12 +299,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     >
                 </label>
 
-                <div
-                    class="admin-image-preview-grid"
-                    id="new-image-preview"
-                    hidden
-                ></div>
-
                 <p class="admin-muted">
                     You can select several images. The first image doubles as the
                     cover image on the listing pages. Visitors can click any

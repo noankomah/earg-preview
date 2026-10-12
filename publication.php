@@ -117,7 +117,7 @@ if ($publication) {
     >
 
     <link rel="stylesheet" href="assets/css/about.css?v=2">
-    <link rel="stylesheet" href="assets/css/publications.css?v=6">
+    <link rel="stylesheet" href="assets/css/publications.css?v=5">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -184,6 +184,49 @@ if ($publication) {
                                 </div>
                             <?php endif; ?>
                         </div>
+
+                        <?php if ($lightboxImages): ?>
+                            <div
+                                class="publication-gallery-root"
+                                id="publication-gallery-root"
+                                data-images="<?= e(json_encode(
+                                    $lightboxImages,
+                                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                                )) ?>"
+                            >
+                                <?php if ($gallery): ?>
+                                    <div class="publication-gallery">
+                                        <?php foreach ($gallery as $index => $imagePath): ?>
+                                            <button
+                                                type="button"
+                                                class="publication-gallery-thumb publication-gallery-zoom"
+                                                data-index="<?= (int) $index ?>"
+                                                aria-label="Zoom image <?= $index + 1 ?>"
+                                            >
+                                                <img
+                                                    src="<?= e($imagePath) ?>"
+                                                    alt="<?= e((string) $publication['title']) ?>"
+                                                    loading="lazy"
+                                                >
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php elseif (!empty($publication['cover_image'])): ?>
+                                    <button
+                                        type="button"
+                                        class="publication-cover-zoom publication-gallery-zoom"
+                                        data-index="0"
+                                        aria-label="Zoom image"
+                                    >
+                                        <img
+                                            src="<?= e((string) $publication['cover_image']) ?>"
+                                            alt="<?= e((string) $publication['title']) ?>"
+                                            class="publication-cover-image"
+                                        >
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="publication-detail-body">
                             <?= sanitize_rich_text(
@@ -374,35 +417,20 @@ if ($publication) {
 
                     lightboxImg.src = galleryImages[activeIndex];
                     lightboxImg.alt = "Viewing image " + (activeIndex + 1) + " of " + galleryImages.length;
-                    lightbox.classList.add("is-open");
-                    lightbox.removeAttribute("hidden");
-                    document.body.classList.add("publication-no-scroll");
+                    lightbox.hidden = false;
+                    document.body.style.overflow = "hidden";
                 }
 
                 function closeLightbox() {
                     if (!lightbox) return;
 
-                    lightbox.classList.remove("is-open");
-                    lightbox.setAttribute("hidden", "");
-                    document.body.classList.remove("publication-no-scroll");
+                    lightbox.hidden = true;
+                    document.body.style.overflow = "";
                 }
 
                 if (closeBtn) {
                     closeBtn.addEventListener("click", closeLightbox);
                 }
-
-                // One delegated listener handles every zoomable image, so it
-                // keeps working even if images are added or replaced later.
-                galleryRoot.addEventListener("click", function (event) {
-                    var button = event.target.closest(".publication-gallery-zoom");
-
-                    if (!button) return;
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    openLightbox(Number(button.getAttribute("data-index") || 0));
-                });
 
                 if (prevBtn) {
                     prevBtn.addEventListener("click", function () {
@@ -426,7 +454,7 @@ if ($publication) {
                 }
 
                 document.addEventListener("keydown", function (event) {
-                    if (!lightbox || !lightbox.classList.contains("is-open")) return;
+                    if (!lightbox || lightbox.hidden) return;
 
                     if (event.key === "Escape") {
                         closeLightbox();
@@ -435,6 +463,12 @@ if ($publication) {
                     } else if (event.key === "ArrowRight" && nextBtn) {
                         openLightbox(activeIndex + 1);
                     }
+                });
+
+                galleryRoot.querySelectorAll(".publication-gallery-zoom").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        openLightbox(Number(button.dataset.index || 0));
+                    });
                 });
             }
         });
