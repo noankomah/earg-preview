@@ -299,6 +299,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     >
                 </label>
 
+                <div
+                    class="admin-image-preview-grid"
+                    id="new-image-preview"
+                    hidden
+                ></div>
+
                 <p class="admin-muted">
                     You can select several images. The first image doubles as the
                     cover image on the listing pages. Visitors can click any
@@ -349,5 +355,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="../assets/rich-text.js"></script>
+    <script src="../assets/image-preview.js"></script>
 </body>
 </html>
