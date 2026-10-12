@@ -1286,17 +1286,25 @@ main[aria-label="Publications"] .value-card p {
 }
 
 /* Lightbox overlay ------------------------------------------------- */
+body.publication-no-scroll {
+  overflow: hidden;
+}
+
 .publication-lightbox {
   position: fixed;
   inset: 0;
   z-index: 9999;
 
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
 
   background: rgba(6, 20, 15, 0.94);
   padding: 20px;
+}
+
+.publication-lightbox.is-open {
+  display: flex;
 }
 
 .publication-lightbox[hidden] {
@@ -1372,5 +1380,85 @@ main[aria-label="Publications"] .value-card p {
 
   .publication-lightbox-next {
     right: 30px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Publication detail: article left, image column right
+   --------------------------------------------------------------- */
+.publication-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 28px;
+}
+
+.publication-detail-layout .publication-detail-card {
+  max-width: none;
+  margin: 0;
+}
+
+.publication-detail-images {
+  position: sticky;
+  top: 100px;
+  margin: 0;
+}
+
+.publication-images-label {
+  margin: 0 0 12px;
+
+  color: var(--green-700);
+
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.publication-detail-images .publication-gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.publication-detail-images .publication-gallery-thumb {
+  width: 100%;
+  aspect-ratio: auto;
+  overflow: hidden;
+
+  border-radius: 12px;
+}
+
+.publication-detail-images .publication-gallery-thumb img,
+.publication-detail-images .publication-cover-zoom img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 47, 36, 0.14);
+}
+
+.publication-detail-images .publication-cover-zoom {
+  width: 100%;
+}
+
+.publication-detail-images .publication-cover-zoom img {
+  object-fit: contain;
+  height: 300px;
+  background: #f4f8f5;
+}
+
+@media (max-width: 1024px) {
+  .publication-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .publication-detail-images {
+    position: static;
+  }
+
+  .publication-detail-images .publication-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
