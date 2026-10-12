@@ -273,7 +273,7 @@
                 <img src="assets/images/nana2.png" id="nana-img">
               </div>
               <h3>Nana Ankomah</h3>
-              <p>Human Resources Manager</p>
+              <p>Digital and Communications Lead</p>
             </article>
           </div>
         </div>
