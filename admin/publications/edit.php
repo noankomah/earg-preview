@@ -440,5 +440,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="../assets/rich-text.js"></script>
+    <script src="../assets/image-preview.js"></script>
 </body>
 </html>

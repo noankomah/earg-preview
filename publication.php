@@ -138,6 +138,8 @@ if ($publication) {
 
                 <?php if ($publication): ?>
 
+                    <div class="publication-detail-layout">
+
                     <article class="publication-detail-card">
 
                         <div class="publication-detail-heading">
@@ -244,6 +246,56 @@ if ($publication) {
                         <?php endif; ?>
 
                     </article>
+
+                    <?php if ($lightboxImages): ?>
+                        <aside
+                            class="publication-detail-images publication-gallery-root"
+                            id="publication-gallery-root"
+                            aria-label="Publication images"
+                            data-images="<?= e(json_encode(
+                                $lightboxImages,
+                                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                            )) ?>"
+                        >
+                            <p class="publication-images-label">
+                                Images
+                            </p>
+
+                            <?php if ($gallery): ?>
+                                <div class="publication-gallery">
+                                    <?php foreach ($gallery as $index => $imagePath): ?>
+                                        <button
+                                            type="button"
+                                            class="publication-gallery-thumb publication-gallery-zoom"
+                                            data-index="<?= (int) $index ?>"
+                                            aria-label="Zoom image <?= $index + 1 ?>"
+                                        >
+                                            <img
+                                                src="<?= e($imagePath) ?>"
+                                                alt="<?= e((string) $publication['title']) ?>"
+                                                loading="lazy"
+                                            >
+                                        </button>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php elseif (!empty($publication['cover_image'])): ?>
+                                <button
+                                    type="button"
+                                    class="publication-cover-zoom publication-gallery-zoom"
+                                    data-index="0"
+                                    aria-label="Zoom image"
+                                >
+                                    <img
+                                        src="<?= e((string) $publication['cover_image']) ?>"
+                                        alt="<?= e((string) $publication['title']) ?>"
+                                        class="publication-cover-image"
+                                    >
+                                </button>
+                            <?php endif; ?>
+                        </aside>
+                    <?php endif; ?>
+
+                    </div>
 
                 <?php else: ?>
 
