@@ -37,33 +37,6 @@ $alreadySubmitted = !empty($_SESSION['survey_submitted']);
     <script defer src="assets/vendor/alpinejs/alpine.min.js"></script>
 </head>
 
-<script>
-    // Opens/closes the mobile navigation dropdowns (same behaviour as other pages).
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdowns = document.querySelectorAll(".nav-dropdown");
-
-        dropdowns.forEach(function (dropdown) {
-            const parent = dropdown.querySelector(".nav-parent");
-
-            if (!parent) return;
-
-            parent.addEventListener("click", function (event) {
-                if (window.innerWidth > 1024) return;
-
-                event.preventDefault();
-
-                dropdowns.forEach(function (otherDropdown) {
-                    if (otherDropdown !== dropdown) {
-                        otherDropdown.classList.remove("is-open");
-                    }
-                });
-
-                dropdown.classList.toggle("is-open");
-            });
-        });
-    });
-</script>
-
 <body>
     <?php include __DIR__ . '/includes/navbar.php'; ?>
 
@@ -71,7 +44,7 @@ $alreadySubmitted = !empty($_SESSION['survey_submitted']);
         <div class="container">
 
             <header class="survey-header">
-                <p class="survey-eyebrow"><?= htmlspecialchars($meta['subtitle'], ENT_QUOTES, 'UTF-8') ?></p>
+                
                 <h1><?= htmlspecialchars($meta['title'], ENT_QUOTES, 'UTF-8') ?></h1>
                 <p class="survey-intro"><?= htmlspecialchars($meta['description'], ENT_QUOTES, 'UTF-8') ?></p>
             </header>
@@ -222,8 +195,5 @@ $alreadySubmitted = !empty($_SESSION['survey_submitted']);
     <?php include __DIR__ . '/includes/footer.php'; ?>
 
     <script src="assets/js/survey.js"></script>
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
 </body>
 </html>

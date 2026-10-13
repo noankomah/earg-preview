@@ -4,6 +4,9 @@
  * Fetches the aggregated figures from stats.php and renders one Chart.js
  * chart per question: a doughnut for single-choice, a bar for multi-choice,
  * and a bar for the 1-10 scale. Free-text questions just show a count.
+ *
+ * The chart cards are Bootstrap cards inside the "row" container
+ * (#surveyCharts) in admin/survey/index.php.
  */
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('surveyCharts');
@@ -26,38 +29,53 @@ document.addEventListener('DOMContentLoaded', function () {
         return question.number + '. ' + question.title;
     }
 
+    // Builds a Bootstrap column + card, adds it to the grid, and returns the
+    // card body where the chart/notes should be placed.
     function makeCard(question) {
-        const card = document.createElement('article');
-        card.className = 'survey-chart-card';
+        const col = document.createElement('div');
+        col.className = 'col-12 col-xl-6';
+
+        const card = document.createElement('div');
+        card.className = 'card h-100';
+
+        const body = document.createElement('div');
+        body.className = 'card-body';
 
         const heading = document.createElement('h3');
-        heading.className = 'survey-chart-title';
+        heading.className = 'card-title h6 mb-3';
         heading.textContent = title(question);
-        card.appendChild(heading);
+        body.appendChild(heading);
 
-        return card;
+        card.appendChild(body);
+        col.appendChild(card);
+        container.appendChild(col);
+
+        return body;
     }
 
-    function makeCanvas(card) {
+    function makeCanvas(body) {
         const wrap = document.createElement('div');
         wrap.className = 'survey-chart-canvas';
         const canvas = document.createElement('canvas');
         wrap.appendChild(canvas);
-        card.appendChild(wrap);
+        body.appendChild(wrap);
         return canvas;
     }
 
-    function addNote(card, text) {
+    function addNote(body, text) {
         const note = document.createElement('p');
-        note.className = 'survey-chart-note';
+        note.className = 'text-muted small mt-2 mb-0';
         note.textContent = text;
-        card.appendChild(note);
+        body.appendChild(note);
+    }
+
+    function message(text) {
+        container.innerHTML = '<div class="col-12"><p class="text-muted mb-0">' + text + '</p></div>';
     }
 
     function drawChoiceChart(question) {
-        const card = makeCard(question);
-        const canvas = makeCanvas(card);
-        container.appendChild(card);
+        const body = makeCard(question);
+        const canvas = makeCanvas(body);
 
         const labels = question.options.map(function (option) { return option.label; });
         const values = question.options.map(function (option) { return option.count; });
@@ -110,16 +128,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawScaleChart(question) {
-        const card = makeCard(question);
-        const canvas = makeCanvas(card);
+        const body = makeCard(question);
+        const canvas = makeCanvas(body);
 
         if (question.average !== null && question.average !== undefined) {
-            addNote(card, 'Average: ' + question.average + ' (from ' + question.answered + ' answers)');
+            addNote(body, 'Average: ' + question.average + ' (from ' + question.answered + ' answers)');
         } else {
-            addNote(card, 'No answers yet.');
+            addNote(body, 'No answers yet.');
         }
-
-        container.appendChild(card);
 
         new Chart(canvas, {
             type: 'bar',
@@ -144,9 +160,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawTextCard(question) {
-        const card = makeCard(question);
-        addNote(card, (question.answered || 0) + ' written answer(s). See the list below.');
-        container.appendChild(card);
+        const body = makeCard(question);
+        addNote(body, (question.answered || 0) + ' written answer(s). See the list below.');
     }
 
     fetch('stats.php' + (params.toString() ? '?' + params.toString() : ''), {
@@ -157,12 +172,12 @@ document.addEventListener('DOMContentLoaded', function () {
             container.innerHTML = '';
 
             if (!data.success) {
-                container.innerHTML = '<p class="admin-muted">Could not load charts.</p>';
+                message('Could not load charts.');
                 return;
             }
 
             if (!data.questions || !data.questions.length) {
-                container.innerHTML = '<p class="admin-muted">No questions to chart.</p>';
+                message('No questions to chart.');
                 return;
             }
 
@@ -177,6 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         })
         .catch(function () {
-            container.innerHTML = '<p class="admin-muted">Could not load charts.</p>';
+            message('Could not load charts.');
         });
 });

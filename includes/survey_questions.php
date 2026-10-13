@@ -10,7 +10,7 @@ declare(strict_types=1);
  * so the wording only ever needs to be changed in ONE place.
  *
  * This mirrors the approved Google Form titled
- * "Mentorship, Higher Education and Career Readiness Survey — Northern Ghana".
+ * "Mentorship, Higher Education and Career Readiness Survey - Northern Ghana".
  */
 
 /**
@@ -19,8 +19,7 @@ declare(strict_types=1);
 function survey_meta(): array
 {
     return [
-        'title' => 'Mentorship, Higher Education and Career Readiness Survey — Northern Ghana',
-        'subtitle' => 'University for Development Studies, Tamale - Ghana',
+        'title' => 'Mentorship, Higher Education and Career Readiness Survey - Northern Ghana',
         'description' => 'This short survey is for final-year students and recent graduates '
             . 'from Northern Ghana. It aims to understand access to mentorship and how '
             . 'mentorship may relate to motivation, readiness for postgraduate education, '
@@ -138,7 +137,7 @@ function survey_questions(): array
             'options' => [
                 'No access to a mentor',
                 'I tried to find a mentor but could not',
-                'Very limited — one or two conversations',
+                'Very limited - one or two conversations',
                 'Occasional guidance when needed',
                 'Regular guidance from a mentor',
                 'Structured mentorship programme',
