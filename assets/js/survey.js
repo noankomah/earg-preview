@@ -1,4 +1,42 @@
 /*
+ * JavaScript for the public survey page (survey.php), vanilla, no libraries:
+ *   - the mobile navigation dropdowns (same behaviour as the other pages)
+ *   - the current year in the footer
+ *   - the survey form submission below
+ */
+
+// Mobile navigation dropdowns + footer year.
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+    dropdowns.forEach(function (dropdown) {
+        const parent = dropdown.querySelector('.nav-parent');
+
+        if (!parent) return;
+
+        parent.addEventListener('click', function (event) {
+            if (window.innerWidth > 1024) return;
+
+            event.preventDefault();
+
+            dropdowns.forEach(function (otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('is-open');
+                }
+            });
+
+            dropdown.classList.toggle('is-open');
+        });
+    });
+
+    const year = document.getElementById('year');
+
+    if (year) {
+        year.textContent = new Date().getFullYear();
+    }
+});
+
+/*
  * Public survey submit logic (vanilla JavaScript, no libraries).
  *
  * Sends the form to api/survey.php with fetch(), shows any validation

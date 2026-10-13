@@ -6,6 +6,10 @@ declare(strict_types=1);
  * Admin > Survey responses > view one response.
  *
  * Shows every answer for a single submission, in question order.
+ *
+ * Styling uses Bootstrap (assets/vendor/bootstrap) on top of the shared
+ * admin chrome (admin.css). The delete confirmation lives in
+ * admin/assets/survey-admin.js.
  */
 
 require_once __DIR__ . '/../includes/db.php';
@@ -15,6 +19,20 @@ require_once __DIR__ . '/../../includes/survey_questions.php';
 require_admin();
 
 $pdo = db();
+
+// Delete this response (POST with CSRF token), then return to the list.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!csrf_is_valid($_POST['csrf_token'] ?? null)) {
+        header('Location: index.php?error=csrf');
+        exit;
+    }
+
+    $statement = $pdo->prepare('DELETE FROM survey_responses WHERE id = :id');
+    $statement->execute([':id' => (int) ($_POST['id'] ?? 0)]);
+
+    header('Location: index.php?deleted=' . $statement->rowCount());
+    exit;
+}
 
 $id = (int) ($_GET['id'] ?? 0);
 
@@ -41,7 +59,9 @@ if ($response) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Survey Response #<?= (int) $id ?> | EA Research Group</title>
+
     <link rel="stylesheet" href="../assets/admin.css">
+    <link rel="stylesheet" href="../../assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/survey-admin.css">
 </head>
 <body class="admin-body">
@@ -60,30 +80,36 @@ if ($response) {
     <main class="admin-dashboard">
 
         <?php if (!$response): ?>
-            <section class="admin-page-head">
-                <div>
-                    <p class="admin-eyebrow">Survey responses</p>
-                    <h1>Response not found</h1>
-                    <p class="admin-muted">That response does not exist.</p>
-                </div>
-            </section>
+            <header class="mb-4">
+                <p class="admin-eyebrow mb-1">Survey responses</p>
+                <h1 class="h3 mb-1">Response not found</h1>
+                <p class="text-muted mb-0">That response does not exist.</p>
+            </header>
 
-            <p><a class="admin-inline-link" href="index.php">Back to all responses</a></p>
+            <a class="btn btn-outline-secondary" href="index.php">Back to all responses</a>
         <?php else: ?>
-            <section class="admin-page-head">
+            <header class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
                 <div>
-                    <p class="admin-eyebrow">Survey response</p>
-                    <h1>Response #<?= (int) $response['id'] ?></h1>
-                    <p class="admin-muted">
+                    <p class="admin-eyebrow mb-1">Survey response</p>
+                    <h1 class="h3 mb-1">Response #<?= (int) $response['id'] ?></h1>
+                    <p class="text-muted mb-0">
                         Submitted <?= e(date('j M Y, g:ia', strtotime((string) $response['submitted_at']))) ?>
                     </p>
                 </div>
 
-                <a class="admin-primary-link" href="index.php">Back to all responses</a>
-            </section>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <a class="btn btn-outline-secondary" href="index.php">Back to all responses</a>
 
-            <section class="admin-table-card">
-                <div>
+                    <form method="post" action="view.php" data-confirm="Delete response #<?= (int) $response['id'] ?>? This cannot be undone.">
+                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                        <input type="hidden" name="id" value="<?= (int) $response['id'] ?>">
+                        <button type="submit" class="btn btn-danger">Delete response</button>
+                    </form>
+                </div>
+            </header>
+
+            <div class="card">
+                <div class="card-body">
                     <?php foreach (survey_questions() as $key => $question): ?>
                         <div class="survey-answer-row">
                             <p class="survey-answer-q">
@@ -102,7 +128,7 @@ if ($response) {
                                         <?= e($answers[$key][0]) ?>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <span class="admin-muted">No answer</span>
+                                    <span class="text-muted">No answer</span>
                                 <?php endif; ?>
 
                                 <?php if ($key === 'q11' && !empty($answers['q11_other'])): ?>
@@ -114,9 +140,10 @@ if ($response) {
                         </div>
                     <?php endforeach; ?>
                 </div>
-            </section>
+            </div>
         <?php endif; ?>
     </main>
 
+    <script src="../assets/survey-admin.js"></script>
 </body>
 </html>
