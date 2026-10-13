@@ -12,6 +12,7 @@ deployment:
     - /bin/cp founder-story.php $DEPLOYPATH
     - /bin/cp contact.php $DEPLOYPATH
     - /bin/cp newsletter.php $DEPLOYPATH
+    - /bin/cp survey.php $DEPLOYPATH
     - /bin/cp -R includes $DEPLOYPATH
     # The old static .html pages are no longer used (the pages are PHP now).
     - /bin/rm -f $DEPLOYPATH/index.html $DEPLOYPATH/about.html $DEPLOYPATH/events.html $DEPLOYPATH/programs.html $DEPLOYPATH/publications.html

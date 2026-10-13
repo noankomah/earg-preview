@@ -17,6 +17,7 @@ $stats = [
     'messages' => 0,
     'subscribers' => 0,
     'founder_story' => 0,
+    'survey' => 0,
 ];
 
 $stats['opportunities'] = (int) $pdo
@@ -37,6 +38,10 @@ $stats['subscribers'] = (int) $pdo
 
 $stats['founder_story'] = (int) $pdo
     ->query("SELECT COUNT(*) AS total FROM founder_story")
+    ->fetch()['total'];
+
+$stats['survey'] = (int) $pdo
+    ->query("SELECT COUNT(*) AS total FROM survey_responses")
     ->fetch()['total'];
 ?>
 <!DOCTYPE html>
@@ -99,6 +104,12 @@ $stats['founder_story'] = (int) $pdo
                 <span><?= $stats['publications'] ?></span>
                 <h2>Publications</h2>
                 <p>Add, edit and manage blogs, newsletters and reports.</p>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="survey/index.php">
+                <span><?= $stats['survey'] ?></span>
+                <h2>Survey responses</h2>
+                <p>View the charts, read answers and export the mentorship survey as CSV.</p>
             </a>
         </section>
     </main>
