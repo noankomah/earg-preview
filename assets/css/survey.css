@@ -103,8 +103,15 @@ main.survey-main {
 }
 
 .survey-options .form-check-input {
+    /* Black border so radio/checkbox controls are clearly visible on white. */
     accent-color: var(--green-700, #1f6b4f);
-    border-color: var(--border, #dfe8e2);
+    border-color: #000;
+}
+
+/* Selected radios/checkboxes fill brand green instead of Bootstrap blue. */
+.survey-form .form-check-input:checked {
+    background-color: var(--green-700, #1f6b4f);
+    border-color: #000;
 }
 
 .survey-options .form-check-label {
@@ -153,6 +160,7 @@ main.survey-main {
 .survey-scale-item .form-check-input {
     margin: 0;
     accent-color: var(--green-700, #1f6b4f);
+    border-color: #000;
 }
 
 .survey-scale-item label {

@@ -32,7 +32,7 @@ $alreadySubmitted = !empty($_SESSION['survey_submitted']);
 
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/about.css?v=3">
-    <link rel="stylesheet" href="assets/css/survey.css?v=1">
+    <link rel="stylesheet" href="assets/css/survey.css?v=3">
 
     <script defer src="assets/vendor/alpinejs/alpine.min.js"></script>
 </head>
