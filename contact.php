@@ -15,11 +15,12 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/admin/includes/db.php';
+require_once __DIR__ . '/includes/site.php';
 
 // If the request is not a POST (e.g. someone opens the URL directly),
-// just send them back to the About page.
+// just send them back to the contact page.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: about.php#contact-us');
+    header('Location: ' . url('views/About/contact-us.php'));
     exit;
 }
 
@@ -62,6 +63,6 @@ if ($errorMessage === '') {
     }
 }
 
-// Redirect back to the contact section with a status flag in the URL.
-header('Location: about.php?status=' . $status . '#contact-us');
+// Redirect back to the contact page with a status flag in the URL.
+header('Location: ' . url('views/About/contact-us.php?status=' . $status));
 exit;

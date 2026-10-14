@@ -8,7 +8,7 @@
 
   <meta name="description" content="Effective Altruist Research Group is a non-profit research and academic development organization based in Tamale, Ghana." />
 
-  <link rel="stylesheet" href="assets/css/index.css?v=2">
+  <link rel="stylesheet" href="assets/css/index.css?v=3">
 
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -86,8 +86,8 @@
           </p>
 
           <div class="who-actions">
-            <a href="about.php#who-we-are" class="btn btn-primary">Learn More</a>
-            <a href="about.php#contact-us" class="btn btn-secondary">Work With Us</a>
+            <a href="views/About/who-we-are.php" class="btn btn-primary">Learn More</a>
+            <a href="views/About/contact-us.php" class="btn btn-secondary">Work With Us</a>
           </div>
         </div>
 

@@ -116,7 +116,7 @@ if ($publication) {
         ?>"
     >
 
-    <link rel="stylesheet" href="assets/css/about.css?v=2">
+    <link rel="stylesheet" href="assets/css/about.css?v=3">
     <link rel="stylesheet" href="assets/css/publications.css?v=6">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>

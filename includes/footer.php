@@ -8,13 +8,19 @@
  *
  * The year in the copyright line is filled in by the page's existing
  * JavaScript (each page sets it as it did before the restructuring).
+ *
+ * Links and image paths are built with url() (see includes/site.php) so
+ * this footer works from the site root AND from sub-folders such as
+ * views/About/.
  */
+
+require_once __DIR__ . '/site.php';
 ?>
 <footer class="site-footer">
     <div class="container footer-grid">
 
         <div class="logo-text">
-            <img src="assets/images/earg-logo-transparent.png" alt="EA Research Group Logo" class="footer-logo" />
+            <img src="<?= url('assets/images/earg-logo-transparent.png') ?>" alt="EA Research Group Logo" class="footer-logo" />
             <p>
                 Effective Altruist Research Group is a non-profit research and academic
                 development organization advancing research, mentorship, innovation and impact.
@@ -23,11 +29,11 @@
 
         <div>
             <h4>Quick Links</h4>
-            <a href="about.php#who-we-are" data-route-link="who-we-are">Who We Are</a>
-            <a href="about.php#governing-board" data-route-link="governing-board">Governing Board</a>
-            <a href="about.php#our-team" data-route-link="our-team">Our Team</a>
-            <a href="founder-story.php">Founder's Story</a>
-            <a href="about.php#contact-us" data-route-link="contact-us">Contact Us</a>
+            <a href="<?= url('views/About/who-we-are.php') ?>">Who We Are</a>
+            <a href="<?= url('views/About/governing-board.php') ?>">Governing Board</a>
+            <a href="<?= url('views/About/our-team.php') ?>">Our Team</a>
+            <a href="<?= url('views/About/founder-story.php') ?>">Founder's Story</a>
+            <a href="<?= url('views/About/contact-us.php') ?>">Contact Us</a>
         </div>
 
         <div>

@@ -31,7 +31,7 @@ $alreadySubmitted = !empty($_SESSION['survey_submitted']);
     <meta name="description" content="A short voluntary survey for final-year students and recent graduates in Northern Ghana about mentorship, postgraduate education and job-market readiness." />
 
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/about.css?v=2">
+    <link rel="stylesheet" href="assets/css/about.css?v=3">
     <link rel="stylesheet" href="assets/css/survey.css?v=1">
 
     <script defer src="assets/vendor/alpinejs/alpine.min.js"></script>

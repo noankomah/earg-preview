@@ -14,6 +14,7 @@ deployment:
     - /bin/cp newsletter.php $DEPLOYPATH
     - /bin/cp survey.php $DEPLOYPATH
     - /bin/cp -R includes $DEPLOYPATH
+    - /bin/cp -R views $DEPLOYPATH
     # The old static .html pages are no longer used (the pages are PHP now).
     - /bin/rm -f $DEPLOYPATH/index.html $DEPLOYPATH/about.html $DEPLOYPATH/events.html $DEPLOYPATH/programs.html $DEPLOYPATH/publications.html
     - /bin/cp -R assets $DEPLOYPATH
