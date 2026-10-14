@@ -105,7 +105,7 @@ if ($story && !empty($story['photo_url'])) {
     >
 
     <link rel="stylesheet" href="<?= url('assets/css/about.css?v=3') ?>">
-    <link rel="stylesheet" href="<?= url('assets/css/publications.css?v=5') ?>">
+    <link rel="stylesheet" href="<?= url('assets/css/publications.css?v=7') ?>">
     <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
 
