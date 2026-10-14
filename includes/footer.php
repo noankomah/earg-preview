@@ -47,7 +47,7 @@ require_once __DIR__ . '/site.php';
                      would scroll to the top of the page, so return false to make
                      the click a no-op. Replace with the real URL when available. -->
                 <a href="#" onclick="return false;">Facebook</a>
-                <a href="https://www.linkedin.com/in/ea-research-group-earg-298a9440b" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/ea-research-group/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 <a href="https://youtube.com/@earesearchgrp24?si=FRm8RPLxO82BLVHR" target="_blank" rel="noopener noreferrer">YouTube</a>
             </div>
         </div>
