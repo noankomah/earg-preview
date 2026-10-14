@@ -1130,6 +1130,40 @@ main[aria-label="Publications"] .value-card p {
    FOUNDER STORY PAGE
 ===================================================== */
 
+/*
+ * The founder story reuses .publication-route, but those padding rules only
+ * apply to main[aria-label="Publications"], so this page gets no top spacing
+ * while about.css pulls main up by 21px. On desktop that tucks the card under
+ * the sticky header. Clear the pull-up and add a clear gap at the top.
+ */
+@media (min-width: 1025px) {
+  .founder-story-page {
+    margin-top: 0;
+  }
+
+  .founder-story-page > .about-route {
+    padding-top: 35px;
+    padding-bottom: 35px;
+  }
+}
+
+/*
+ * Small screens (<=1024px): about.css forces ".about-route" top padding to
+ * 14px with !important, so the desktop block above is ignored here. Set the
+ * padding on this page's own wrapper instead, using !important to win.
+ */
+@media (max-width: 1024px) {
+  .founder-story-page {
+    margin-top: 0;
+    padding: 0 !important;
+  }
+
+  .founder-story-page > .about-route {
+    padding-top: 35px !important;
+    padding-bottom: 35px !important;
+  }
+}
+
 .founder-story-card {
   max-width: 960px;
   padding: 40px;
@@ -1220,7 +1254,13 @@ main[aria-label="Publications"] .value-card p {
 }
 
 @media (max-width: 700px) {
-  .founder-story-grid {
+  /*
+   * Must match the specificity of the ":has(.founder-story-photo)" rule above,
+   * otherwise the two-column grid keeps winning on small screens and squeezes
+   * .founder-story-main into a narrow column.
+   */
+  .founder-story-grid,
+  .founder-story-grid:has(.founder-story-photo) {
     grid-template-columns: 1fr;
   }
 
