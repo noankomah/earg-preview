@@ -10,7 +10,7 @@
       content="EA Research Group blogs, newsletters, reports, scholarships and opportunities."
     />
 
-    <link rel="stylesheet" href="assets/css/about.css?v=2">
+    <link rel="stylesheet" href="assets/css/about.css?v=3">
     <link rel="stylesheet" href="assets/css/publications.css?v=4">  
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>

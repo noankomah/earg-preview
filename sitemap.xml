@@ -6,7 +6,23 @@
   </url>
 
   <url>
-    <loc>https://earesearch.org/about.php</loc>
+    <loc>https://earesearch.org/views/About/who-we-are.php</loc>
+  </url>
+
+  <url>
+    <loc>https://earesearch.org/views/About/governing-board.php</loc>
+  </url>
+
+  <url>
+    <loc>https://earesearch.org/views/About/our-team.php</loc>
+  </url>
+
+  <url>
+    <loc>https://earesearch.org/views/About/founder-story.php</loc>
+  </url>
+
+  <url>
+    <loc>https://earesearch.org/views/About/contact-us.php</loc>
   </url>
 
   <url>
@@ -19,10 +35,6 @@
 
   <url>
     <loc>https://earesearch.org/events.php</loc>
-  </url>
-
-  <url>
-    <loc>https://earesearch.org/founder-story.php</loc>
   </url>
 
 </urlset>
