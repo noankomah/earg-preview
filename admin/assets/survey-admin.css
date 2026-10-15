@@ -1,0 +1,145 @@
+/*
+ * Styles for the admin survey dashboard (admin/survey/index.php and view.php).
+ * Layered on top of admin.css; only adds survey-specific bits.
+ */
+
+.survey-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid #dfe8e2;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin: 0 0 22px;
+}
+
+.survey-filter label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f2f24;
+}
+
+.survey-filter input[type="date"] {
+    border: 1px solid #dfe8e2;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font: inherit;
+}
+
+.survey-filter button {
+    border: 0;
+    border-radius: 999px;
+    background: #1f6b4f;
+    color: #fff;
+    font-weight: 800;
+    padding: 11px 22px;
+    cursor: pointer;
+}
+
+.survey-filter a {
+    color: #1f6b4f;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.survey-stat-grid {
+    margin-bottom: 22px;
+}
+
+.survey-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin: 0 0 28px;
+}
+
+.survey-chart-card {
+    background: #fff;
+    border: 1px solid #dfe8e2;
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+.survey-chart-title {
+    margin: 0 0 14px;
+    font-size: 1rem;
+    color: #0f2f24;
+    line-height: 1.4;
+}
+
+.survey-chart-canvas {
+    position: relative;
+    height: 260px;
+}
+
+.survey-chart-note {
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+    color: #5f6f68;
+}
+
+.survey-section-title {
+    margin: 0 0 16px;
+    color: #0f2f24;
+    font-size: 1.15rem;
+}
+
+.survey-written-block {
+    margin-bottom: 22px;
+}
+
+.survey-written-block h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: #0f2f24;
+}
+
+.survey-written-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.survey-written-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eef3ef;
+}
+
+.survey-written-date {
+    display: block;
+    font-size: 0.78rem;
+    color: #8a978f;
+}
+
+.survey-answer-row {
+    padding: 14px 0;
+    border-bottom: 1px solid #eef3ef;
+}
+
+.survey-answer-q {
+    margin: 0 0 6px;
+    font-weight: 800;
+    color: #0f2f24;
+}
+
+.survey-answer-a ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.survey-answer-other {
+    margin: 6px 0 0;
+    color: #5f6f68;
+}
+
+/* Simple text link used in the responses table and the single-response view. */
+.admin-inline-link {
+    color: #1f6b4f;
+    font-weight: 700;
+    text-decoration: underline;
+}
