@@ -51,7 +51,7 @@ $publications = $statement->fetchAll();
 
     <main class="admin-dashboard">
 
-        <section class="admin-page-heading">
+        <section class="admin-page-head">
             <div>
                 <p class="admin-eyebrow">Content manager</p>
                 <h1>Publications</h1>
@@ -161,7 +161,7 @@ $publications = $statement->fetchAll();
 
                                             <a
                                                 href="delete.php?id=<?= (int) $publication['id'] ?>"
-                                                class="admin-danger-link"
+                                                class="danger"
                                             >
                                                 Delete
                                             </a>
