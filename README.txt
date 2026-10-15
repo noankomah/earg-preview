@@ -28,6 +28,9 @@ Notes:
   - contact-us.php uses Bootstrap's grid for the layout and the site's existing .contact-* styles (about.css) for the look; assets/css/contact.css holds the grid glue.
 - The contact form on views/About/contact-us.php posts to contact.php which saves messages to the contact_messages table.
 - Founder's Story public page (views/About/founder-story.php) is edited in the admin area (admin/founder_story.php); content is stored in the founder_story table.
+- The Our Team page (views/About/our-team.php) reads the team_members table, so people are added in the admin area (admin/team/) instead of by editing code.
+  - Run admin/team/schema.sql once per database first; it creates the table and seeds the three original members, and is safe to re-run.
+  - Member photos are uploaded to assets/uploads/team/ and stored as site-relative paths.
 - Admin pages share their own navigation from admin/includes/admin_navbar.php.
 - Admin messages inbox (admin/messages.php) lists contact form messages with mark read / archive / delete actions.
 - Admin subscribers list (admin/subscribers.php) shows newsletter signups and can download them as a CSV.

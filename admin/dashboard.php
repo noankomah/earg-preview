@@ -18,6 +18,7 @@ $stats = [
     'subscribers' => 0,
     'founder_story' => 0,
     'survey' => 0,
+    'team' => 0,
 ];
 
 $stats['opportunities'] = (int) $pdo
@@ -43,6 +44,17 @@ $stats['founder_story'] = (int) $pdo
 $stats['survey'] = (int) $pdo
     ->query("SELECT COUNT(*) AS total FROM survey_responses")
     ->fetch()['total'];
+
+// The team table is newer than the rest of the schema. Until
+// admin/team/schema.sql has been imported, the count simply stays at 0 so
+// the dashboard never fails to load.
+try {
+    $stats['team'] = (int) $pdo
+        ->query("SELECT COUNT(*) AS total FROM team_members")
+        ->fetch()['total'];
+} catch (Throwable $exception) {
+    error_log('Dashboard team count error: ' . $exception->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +122,12 @@ $stats['survey'] = (int) $pdo
                 <span><?= $stats['survey'] ?></span>
                 <h2>Survey responses</h2>
                 <p>View the charts, read answers and export the mentorship survey as CSV.</p>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="team/index.php">
+                <span><?= $stats['team'] ?></span>
+                <h2>Team members</h2>
+                <p>Add, edit and reorder the people shown on the Our Team page.</p>
             </a>
         </section>
     </main>

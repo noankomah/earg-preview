@@ -992,3 +992,14 @@ body.admin-body {
   font-size: 0.76rem;
   font-weight: 700;
 }
+
+/* Small square photo shown in the admin team member table. */
+.admin-table-photo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #eef3ef;
+}
