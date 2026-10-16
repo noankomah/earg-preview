@@ -20,7 +20,7 @@ Notes:
   - includes/footer.php (quick links, contact and social links)
   - includes/site.php (url() helper; builds links that work from any folder)
 - Alpine.js is loaded by CDN in index.php.
-- The hero slider changes every 30 seconds and has manual left/right controls.
+- The hero slider changes every 5 seconds and has manual left/right controls.
 - Newsletter form is wired to newsletter.php which saves emails to the newsletter_subscribers table.
 - The About page is split into standalone pages under views/About/:
   - who-we-are.php, governing-board.php, our-team.php, contact-us.php, founder-story.php
@@ -31,6 +31,9 @@ Notes:
 - The Our Team page (views/About/our-team.php) reads the team_members table, so people are added in the admin area (admin/team/) instead of by editing code.
   - Run admin/team/schema.sql once per database first; it creates the table and seeds the three original members, and is safe to re-run.
   - Member photos are uploaded to assets/uploads/team/ and stored as site-relative paths.
+- The home page hero slider (index.php) reads the hero_slides table, so the photos are added in the admin area (admin/hero/) instead of by editing assets/images/hero_images/images.json.
+  - Run admin/hero/schema.sql once per database first; it creates the table and seeds the nine original slides, and is safe to re-run.
+  - Uploaded photos go to assets/uploads/hero/ and are stored as site-relative paths; if the table is missing the slider falls back to assets/images/hero_images/images.json.
 - Admin pages share their own navigation from admin/includes/admin_navbar.php.
 - Admin messages inbox (admin/messages.php) lists contact form messages with mark read / archive / delete actions.
 - Admin subscribers list (admin/subscribers.php) shows newsletter signups and can download them as a CSV.

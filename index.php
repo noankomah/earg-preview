@@ -1,3 +1,62 @@
+<?php
+/**
+ * Home page.
+ *
+ * The hero slider photos are read from the hero_slides table, which is managed
+ * in the admin area (admin/hero/). If the table is missing or empty we fall back
+ * to the original static list in assets/images/hero_images/images.json, so the
+ * home page always keeps its slider.
+ */
+
+$heroSlides = [];
+
+$heroDbFile = __DIR__ . '/admin/includes/db.php';
+$heroConfigFile = __DIR__ . '/admin/includes/config.local.php';
+$heroPrivateConfig = '/home/earesearch/earg_private/config.php';
+
+// Only touch the database when a config file is present, so a half-configured
+// environment still serves the page from the JSON fallback below.
+if (is_file($heroDbFile) && (is_file($heroConfigFile) || is_file($heroPrivateConfig))) {
+    require_once $heroDbFile;
+
+    try {
+        $heroSlides = db()
+            ->query('SELECT image_url, position FROM hero_slides WHERE is_visible = 1 ORDER BY display_order ASC, id ASC')
+            ->fetchAll();
+    } catch (Throwable $exception) {
+        error_log('Home hero slider query error: ' . $exception->getMessage());
+    }
+}
+
+// Fallback: the original static slide list shipped with the site.
+if (!$heroSlides) {
+    $heroJsonFile = __DIR__ . '/assets/images/hero_images/images.json';
+
+    if (is_file($heroJsonFile)) {
+        $heroJson = json_decode((string) file_get_contents($heroJsonFile), true);
+
+        if (is_array($heroJson)) {
+            foreach ($heroJson as $heroSlide) {
+                if (empty($heroSlide['src'])) {
+                    continue;
+                }
+
+                $heroSlides[] = [
+                    'image_url' => (string) $heroSlide['src'],
+                    'position' => (string) ($heroSlide['position'] ?? 'center center'),
+                ];
+            }
+        }
+    }
+}
+
+if (!function_exists('e')) {
+    function e(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,12 +102,24 @@
   <?php include __DIR__ . '/includes/navbar.php'; ?>
 
   <main>
-    <!-- FULL-WIDTH HERO SLIDER:
-         The slides are built from assets/images/hero_images/images.json by
-         assets/js/index.js. The first slide (index 0) is the EA logo image
-         and is the active/opening slide on page load. -->
+    <!-- HERO SLIDER:
+         The slides and their dots are rendered by PHP above from the
+         hero_slides table (managed in admin/hero/), falling back to
+         assets/images/hero_images/images.json. assets/js/index.js adds the
+         rotation and the controls. The first slide is active on load. -->
     <section class="hero-slider" aria-label="EA Research Group highlights">
-      <div class="slide-stage" id="heroSlider"></div>
+      <div class="slide-stage" id="heroSlider">
+        <?php if ($heroSlides): ?>
+          <?php foreach ($heroSlides as $heroIndex => $heroSlide): ?>
+            <div
+              class="slide<?= $heroIndex === 0 ? ' is-active' : '' ?>"
+              style="background-image: url('<?= e($heroSlide['image_url']) ?>'); background-position: <?= e($heroSlide['position']) ?>;"
+            ></div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div class="slide is-active" style="background-image: linear-gradient(90deg, rgba(15,47,36,0.88), rgba(15,47,36,0.45));"></div>
+        <?php endif; ?>
+      </div>
 
       <div class="hero-fixed-overlay">
         <div class="container slide-content">
@@ -61,7 +132,14 @@
       <button class="slider-btn slider-btn-left" id="prevSlide" aria-label="Previous slide">‹</button>
       <button class="slider-btn slider-btn-right" id="nextSlide" aria-label="Next slide">›</button>
 
-      <div class="slider-dots" id="sliderDots" aria-label="Slider navigation"></div>
+      <div class="slider-dots" id="sliderDots" aria-label="Slider navigation">
+        <?php foreach ($heroSlides as $heroIndex => $heroSlide): ?>
+          <button
+            class="dot<?= $heroIndex === 0 ? ' is-active' : '' ?>"
+            aria-label="Go to slide <?= $heroIndex + 1 ?>"
+          ></button>
+        <?php endforeach; ?>
+      </div>
     </section>
 
 

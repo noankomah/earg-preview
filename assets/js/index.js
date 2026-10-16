@@ -14,55 +14,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentSlide = 0;
   let slideInterval;
 
-  // The hero slider is populated from assets/images/hero_images/images.json,
-  // an array of { "src": "...", "position": "..." } slides shown in array
-  // order. The first entry is the EA logo slide (added as the opening slide).
-  fetch("assets/images/hero_images/images.json")
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (images) {
-      if (!images || images.length === 0) {
-        slider.innerHTML = '<div class="slide is-active" style="background-image: linear-gradient(90deg, rgba(15,47,36,0.88), rgba(15,47,36,0.45));"></div>';
-        return;
-      }
+  // The hero slides and their dots are rendered by index.php from the
+  // hero_slides table, which is managed in the admin area (admin/hero/).
+  // This script only wires up the rotation and the controls.
+  slides = slider ? slider.querySelectorAll(".slide") : [];
+  dots = dotsContainer ? dotsContainer.querySelectorAll(".dot") : [];
 
-      images.forEach(function (image, index) {
-      const slide = document.createElement("div");
-      slide.className = "slide";
-
-      slide.style.backgroundImage = `url("${image.src}")`;
-      slide.style.backgroundPosition = image.position || "center center";
-
-        if (index === 0) {
-          slide.classList.add("is-active");
-        }
-
-        slider.appendChild(slide);
-
-        const dot = document.createElement("button");
-        dot.className = "dot";
-        dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
-        dot.addEventListener("click", function () {
-          showSlide(index);
-          resetAutoSlide();
-        });
-
-        if (index === 0) {
-          dot.classList.add("is-active");
-        }
-
-        dotsContainer.appendChild(dot);
-      });
-
-      slides = document.querySelectorAll(".slide");
-      dots = document.querySelectorAll(".dot");
-
-      startAutoSlide();
-    })
-    .catch(function () {
-      slider.innerHTML = '<div class="slide is-active" style="background-image: linear-gradient(90deg, rgba(15,47,36,0.88), rgba(15,47,36,0.45));"></div>';
+  // Attach the click handler to each dot rendered by the server.
+  dots.forEach(function (dot, index) {
+    dot.addEventListener("click", function () {
+      showSlide(index);
+      resetAutoSlide();
     });
+  });
+
+  if (slides.length > 1) {
+    startAutoSlide();
+  }
 
   function showSlide(index) {
     if (!slides.length) return;
