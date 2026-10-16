@@ -53,6 +53,11 @@ $data = [
     'is_visible' => (string) (int) ($slide['is_visible'] ?? 1),
 ];
 
+// The slide's current position. Kept so the drop-down can offer it even if it
+// is a value that predates the fixed option list, and so a tampered POST that
+// is neither the current value nor a listed option can be rejected.
+$originalPosition = $data['position'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $slide) {
     if (!csrf_is_valid($_POST['csrf_token'] ?? null)) {
         $errors[] = 'Security check failed. Please try again.';
@@ -62,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $slide) {
     $data['display_order'] = trim((string) ($_POST['display_order'] ?? ''));
     $data['is_visible'] = isset($_POST['is_visible']) ? '1' : '0';
 
-    if ($data['position'] === '') {
-        $data['position'] = 'center center';
+    if (!array_key_exists($data['position'], hero_position_options($originalPosition))) {
+        $errors[] = 'Please choose a position from the list.';
     }
 
     if (filter_var($data['display_order'], FILTER_VALIDATE_INT) === false) {
@@ -210,15 +215,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $slide) {
                     <div class="admin-two-cols">
                         <label>
                             Position
-                            <input
-                                type="text"
-                                name="position"
-                                value="<?= e($data['position']) ?>"
-                                maxlength="60"
-                                placeholder="center center"
-                            >
+                            <select name="position">
+                                <?php foreach (hero_position_options($data['position']) as $value => $label): ?>
+                                    <option
+                                        value="<?= e($value) ?>"
+                                        <?= $data['position'] === $value ? 'selected' : '' ?>
+                                    >
+                                        <?= e($label) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                             <span class="admin-field-help">
-                                Which part of the photo stays in view.
+                                Where the photo is anchored in the frame. Leave it
+                                as it is to keep the same framing.
                             </span>
                         </label>
 
