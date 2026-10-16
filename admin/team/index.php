@@ -57,7 +57,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
     $adminPage = 'Team Manager';
     $adminLinks = array(
         array('Dashboard', '../dashboard.php'),
-        array('View on website', '../views/About/our-team.php'),
+        array('View on website', '../../views/About/our-team.php'),
         array('Log out', '../logout.php'),
     );
     ?>
