@@ -111,6 +111,37 @@ function hero_next_display_order(PDO $pdo): int
 }
 
 /**
+ * The background-position choices offered in the slide form.
+ *
+ * The value is CSS, so a drop-down is used instead of a free-text box where a
+ * typo silently does nothing. The labels describe where the photo is anchored:
+ * the first value is the default and the top one keeps a subject's head in view.
+ *
+ * When $current is passed and is not one of the choices (e.g. a slide saved
+ * before this list existed), it is added as a selectable option so editing a
+ * slide never changes its position behind the admin's back.
+ */
+function hero_position_options(string $current = ''): array
+{
+    $options = [
+        'center top' => 'Top',
+        'center 20%' => 'Upper',
+        'center 45%' => 'Just above center',
+        'center center' => 'Center (default)',
+        'center 65%' => 'Just below center',
+        'center bottom' => 'Bottom',
+        'left center' => 'Left',
+        'right center' => 'Right',
+    ];
+
+    if ($current !== '' && !array_key_exists($current, $options)) {
+        $options = [$current => 'Current (' . $current . ')'] + $options;
+    }
+
+    return $options;
+}
+
+/**
  * Turn a failed hero_slides query into an instruction the admin can act on.
  *
  * The most common failure by far is the schema file not having been imported

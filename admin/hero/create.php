@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data['display_order'] = trim((string) ($_POST['display_order'] ?? ''));
     $data['is_visible'] = isset($_POST['is_visible']) ? '1' : '0';
 
-    if ($data['position'] === '') {
-        $data['position'] = 'center center';
+    if (!array_key_exists($data['position'], hero_position_options())) {
+        $errors[] = 'Please choose a position from the list.';
     }
 
     if ($data['display_order'] === '') {
@@ -170,16 +170,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="admin-two-cols">
                     <label>
                         Position
-                        <input
-                            type="text"
-                            name="position"
-                            value="<?= e($data['position']) ?>"
-                            maxlength="60"
-                            placeholder="center center"
-                        >
+                        <select name="position">
+                            <?php foreach (hero_position_options() as $value => $label): ?>
+                                <option
+                                    value="<?= e($value) ?>"
+                                    <?= $data['position'] === $value ? 'selected' : '' ?>
+                                >
+                                    <?= e($label) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                         <span class="admin-field-help">
-                            Which part of the photo stays in view, e.g.
-                            <code>center 45%</code> or <code>center top</code>.
+                            Where the photo is anchored in the frame. "Center" is
+                            the safe default; pick "Top" or "Upper" when the
+                            subject's head must stay in view.
                         </span>
                     </label>
 
