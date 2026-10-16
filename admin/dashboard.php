@@ -19,6 +19,7 @@ $stats = [
     'founder_story' => 0,
     'survey' => 0,
     'team' => 0,
+    'hero' => 0,
 ];
 
 $stats['opportunities'] = (int) $pdo
@@ -54,6 +55,15 @@ try {
         ->fetch()['total'];
 } catch (Throwable $exception) {
     error_log('Dashboard team count error: ' . $exception->getMessage());
+}
+
+// Same idea for the hero slider table (admin/hero/schema.sql).
+try {
+    $stats['hero'] = (int) $pdo
+        ->query("SELECT COUNT(*) AS total FROM hero_slides")
+        ->fetch()['total'];
+} catch (Throwable $exception) {
+    error_log('Dashboard hero count error: ' . $exception->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -128,6 +138,12 @@ try {
                 <span><?= $stats['team'] ?></span>
                 <h2>Team members</h2>
                 <p>Add, edit and reorder the people shown on the Our Team page.</p>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="hero/index.php">
+                <span><?= $stats['hero'] ?></span>
+                <h2>Hero slider</h2>
+                <p>Add, edit and reorder the photos that rotate on the home page.</p>
             </a>
         </section>
     </main>
