@@ -135,7 +135,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
                                     <td>
                                         <img
                                             class="admin-table-photo"
-                                            src="../<?= e((string) ($member['photo_url'] ?: $defaultPhoto)) ?>"
+                                            src="../../<?= e((string) ($member['photo_url'] ?: $defaultPhoto)) ?>"
                                             alt=""
                                         >
                                     </td>
