@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $member) {
 
                     <?php if ($data['photo_url'] !== ''): ?>
                         <div class="admin-photo-preview" data-current-photo>
-                            <img src="../<?= e($data['photo_url']) ?>" alt="Current photo of <?= e($data['name']) ?>">
+                            <img src="../../<?= e($data['photo_url']) ?>" alt="Current photo of <?= e($data['name']) ?>">
 
                             <label>
                                 <input type="checkbox" name="remove_photo" value="1">
