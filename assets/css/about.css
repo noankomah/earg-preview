@@ -495,22 +495,19 @@ button {
   gap: 24px;
 }
 
+/*
+ * Board members sit three to a row. Flexbox is used instead of a fixed
+ * column grid so a last row with fewer than three members is centred
+ * automatically (justify-content: center), whatever the total count.
+ */
 .board-grid {
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .board-grid .person-card {
-  grid-column: span 2;
-}
-
-.board-grid .person-card:nth-child(4) {
-  grid-column: 2 / span 2;
-  margin-bottom: 20px;
-}
-
-.board-grid .person-card:nth-child(5) {
-  grid-column: 4 / span 2;
-  margin-bottom: 20px;
+  flex: 0 0 calc((100% - 48px) / 3);
 }
 
 .advisory-grid {
@@ -1284,22 +1281,19 @@ button {
   gap: 24px;
 }
 
+/*
+ * Board members sit three to a row. Flexbox is used instead of a fixed
+ * column grid so a last row with fewer than three members is centred
+ * automatically (justify-content: center), whatever the total count.
+ */
 .board-grid {
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .board-grid .person-card {
-  grid-column: span 2;
-}
-
-.board-grid .person-card:nth-child(4) {
-  grid-column: 2 / span 2;
-  margin-bottom: 20px;
-}
-
-.board-grid .person-card:nth-child(5) {
-  grid-column: 4 / span 2;
-  margin-bottom: 20px;
+  flex: 0 0 calc((100% - 48px) / 3);
 }
 
 .advisory-grid {

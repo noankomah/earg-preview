@@ -104,7 +104,7 @@ if ($story && !empty($story['photo_url'])) {
         content="The story behind <?= $story ? e((string) $story['founder_name']) : 'EA Research Group' ?>, founder of EA Research Group."
     >
 
-    <link rel="stylesheet" href="<?= url('assets/css/about.css?v=3') ?>">
+    <link rel="stylesheet" href="<?= url('assets/css/about.css?v=4') ?>">
     <link rel="stylesheet" href="<?= url('assets/css/publications.css?v=7') ?>">
     <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>

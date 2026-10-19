@@ -60,7 +60,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
 
   <meta name="description" content="Meet the executive team of Effective Altruist Research Group (EARG), who lead day-to-day implementation, administration, coordination and operational delivery." />
 
-  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=3') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=4') ?>">
   <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
 
