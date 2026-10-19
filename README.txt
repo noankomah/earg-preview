@@ -31,6 +31,9 @@ Notes:
 - The Our Team page (views/About/our-team.php) reads the team_members table, so people are added in the admin area (admin/team/) instead of by editing code.
   - Run admin/team/schema.sql once per database first; it creates the table and seeds the three original members, and is safe to re-run.
   - Member photos are uploaded to assets/uploads/team/ and stored as site-relative paths.
+- The Governing Board page (views/About/governing-board.php) reads the board_members table, so members are added in the admin area (admin/board/) instead of by editing code.
+  - Run admin/board/schema.sql once per database first; it creates the table and seeds the five original members, and is safe to re-run.
+  - Member photos are uploaded to assets/uploads/board/ and stored as site-relative paths.
 - The home page hero slider (index.php) reads the hero_slides table, so the photos are added in the admin area (admin/hero/) instead of by editing assets/images/hero_images/images.json.
   - Run admin/hero/schema.sql once per database first; it creates the table and seeds the nine original slides, and is safe to re-run.
   - Uploaded photos go to assets/uploads/hero/ and are stored as site-relative paths; if the table is missing the slider falls back to assets/images/hero_images/images.json.

@@ -20,6 +20,7 @@ $stats = [
     'survey' => 0,
     'team' => 0,
     'hero' => 0,
+    'board' => 0,
 ];
 
 $stats['opportunities'] = (int) $pdo
@@ -64,6 +65,15 @@ try {
         ->fetch()['total'];
 } catch (Throwable $exception) {
     error_log('Dashboard hero count error: ' . $exception->getMessage());
+}
+
+// Same idea for the board members table (admin/board/schema.sql).
+try {
+    $stats['board'] = (int) $pdo
+        ->query("SELECT COUNT(*) AS total FROM board_members")
+        ->fetch()['total'];
+} catch (Throwable $exception) {
+    error_log('Dashboard board count error: ' . $exception->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -144,6 +154,12 @@ try {
                 <span><?= $stats['hero'] ?></span>
                 <h2>Hero slider</h2>
                 <p>Add, edit and reorder the photos that rotate on the home page.</p>
+            </a>
+
+            <a class="admin-stat-card admin-stat-card-link" href="board/index.php">
+                <span><?= $stats['board'] ?></span>
+                <h2>Governing Board</h2>
+                <p>Add, edit and reorder the people shown on the Governing Board page.</p>
             </a>
         </section>
     </main>
