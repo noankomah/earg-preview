@@ -22,7 +22,7 @@ require_once __DIR__ . '/../../includes/site.php';
 
   <meta name="description" content="Who we are: Effective Altruist Research Group (EARG) is a non-profit research and academic development organization based in Tamale, Ghana, working to strengthen research capacity among young scholars." />
 
-  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=4') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=5') ?>">
   <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
 

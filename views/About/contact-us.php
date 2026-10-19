@@ -29,7 +29,7 @@ require_once __DIR__ . '/../../includes/site.php';
 
   <!-- Bootstrap first, then the shared site styles, then this page's own CSS. -->
   <link rel="stylesheet" href="<?= url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>">
-  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=4') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/about.css?v=5') ?>">
   <link rel="stylesheet" href="<?= url('assets/css/contact.css?v=3') ?>">
   <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
