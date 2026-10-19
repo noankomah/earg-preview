@@ -67,6 +67,15 @@
   margin: 0;
 }
 
+/*
+ * Keep the footer clear of the cards. The shared .about-route only gains
+ * its bottom padding at <=1024px, so on wide screens the board supplies its
+ * own, matching the spacing Our Team gets from #our-team.
+ */
+#governing-board {
+  padding-bottom: 70px;
+}
+
 /* ---------- Tablet / small desktop: two per row ---------- */
 @media (max-width: 1024px) {
   .board-grid {
@@ -103,6 +112,10 @@
   .board-grid .person-card p {
     font-size: 0.78rem;
     line-height: 1.3;
+  }
+
+  #governing-board {
+    padding-bottom: 52px;
   }
 }
 

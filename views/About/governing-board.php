@@ -62,7 +62,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
 
   <link rel="stylesheet" href="<?= url('assets/css/about.css?v=5') ?>">
   <!-- Governing Board specific styles (loaded after about.css so it wins) -->
-  <link rel="stylesheet" href="<?= url('assets/css/governing-board.css?v=1') ?>">
+  <link rel="stylesheet" href="<?= url('assets/css/governing-board.css?v=2') ?>">
   <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
 
