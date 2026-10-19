@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS hero_slides (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY idx_visible_order (is_visible, display_order)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- The nine slides that used to live in assets/images/hero_images/images.json,
 -- copied in the same order (the EA logo is the opening slide).

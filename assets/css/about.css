@@ -546,12 +546,6 @@ button {
   object-position:center;
 }
 
-#lucky-img {
-  width: 100%;
-  height: 100%;
-  object-fit:cover;
-  object-position:top; 
-}
 .person-card h3 {
   color: var(--green-900);
   font-size: 1.12rem;
@@ -1332,12 +1326,6 @@ button {
   object-position:center;
 }
 
-#lucky-img {
-  width: 100%;
-  height: 100%;
-  object-fit:cover;
-  object-position:top; 
-}
 .person-card h3 {
   color: var(--green-900);
   font-size: 1.12rem;

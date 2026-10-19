@@ -72,7 +72,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
 
     <!-- GOVERNING BOARD -->
     <section class="about-route" id="governing-board">
-      <div class="container" id="gorvenment">
+      <div class="container">
         <div class="section-heading centered">
           <h1>Governing Board</h1>
           <p>
@@ -82,7 +82,7 @@ $defaultPhoto = 'assets/images/earg-logo.png';
         </div>
 
         <?php if ($members): ?>
-          <div class="board-grid board-five" aria-label="Governing Board members">
+          <div class="board-grid" aria-label="Governing Board members">
             <?php foreach ($members as $member): ?>
               <article class="person-card">
                 <div class="person-photo">
