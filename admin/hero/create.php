@@ -160,12 +160,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="image"
                         accept="image/png,image/jpeg,image/webp,image/gif"
                         required
+                        data-photo-input
                     >
                     <span class="admin-field-help">
                         A wide photo works best (landscape). PNG, JPG, WEBP or GIF.
                         Maximum 3 MB.
                     </span>
                 </label>
+
+                <div
+                    class="admin-photo-preview admin-photo-preview-new"
+                    data-photo-preview
+                    hidden
+                >
+                    <img data-photo-preview-img alt="New photo preview">
+
+                    <div class="admin-photo-preview-meta">
+                        <strong data-photo-preview-name></strong>
+                        <span data-photo-preview-size></span>
+                    </div>
+                </div>
 
                 <div class="admin-two-cols">
                     <label>
@@ -219,6 +233,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
     </main>
+
+    <script src="../assets/photo-preview.js?v=1"></script>
 
 </body>
 </html>

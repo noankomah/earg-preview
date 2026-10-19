@@ -199,12 +199,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $slide) {
                             type="file"
                             name="image"
                             accept="image/png,image/jpeg,image/webp,image/gif"
+                            data-photo-input
                         >
                         <span class="admin-field-help">
                             PNG, JPG, WEBP or GIF. Maximum 3 MB. Leave empty to keep
                             the current photo.
                         </span>
                     </label>
+
+                    <div
+                        class="admin-photo-preview admin-photo-preview-new"
+                        data-photo-preview
+                        hidden
+                    >
+                        <img data-photo-preview-img alt="New photo preview">
+
+                        <div class="admin-photo-preview-meta">
+                            <strong data-photo-preview-name></strong>
+                            <span data-photo-preview-size></span>
+                        </div>
+                    </div>
 
                     <?php if ($data['image_url'] !== ''): ?>
                         <div class="admin-photo-preview" data-current-photo>
@@ -264,6 +278,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $slide) {
             </section>
         <?php endif; ?>
     </main>
+
+    <script src="../assets/photo-preview.js?v=1"></script>
 
 </body>
 </html>

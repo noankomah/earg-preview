@@ -107,31 +107,6 @@ $defaultPhoto = 'assets/images/earg-logo.png';
             <p>Board profiles are being updated. Please check back soon.</p>
           </div>
         <?php endif; ?>
-        <!--
-        <div class="advisory-block">
-          <div class="section-heading centered small-gap">
-            <h1>Advisory Board</h1>
-            <p>
-              The Advisory Board provides expert guidance, institutional advice and
-              strategic support to strengthen EARG’s programs and long-term direction.
-            </p>
-          </div>
-
-          <div class="advisory-grid" aria-label="Advisory Board members">
-            <article class="person-card">
-              <div class="person-photo"><span>Photo</span></div>
-              <h3>Advisor Name</h3>
-              <p>Advisory Board Member</p>
-            </article>
-
-            <article class="person-card">
-              <div class="person-photo"><span>Photo</span></div>
-              <h3>Advisor Name</h3>
-              <p>Advisory Board Member</p>
-            </article>
-          </div>
-        </div>
-        -->
       </div>
     </section>
 
