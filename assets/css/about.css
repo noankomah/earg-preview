@@ -488,26 +488,10 @@ button {
 /* PEOPLE CARDS */
 
 
-.board-grid,
 .advisory-grid,
 .team-grid {
   display: grid;
   gap: 24px;
-}
-
-/*
- * Board members sit three to a row. Flexbox is used instead of a fixed
- * column grid so a last row with fewer than three members is centred
- * automatically (justify-content: center), whatever the total count.
- */
-.board-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.board-grid .person-card {
-  flex: 0 0 calc((100% - 48px) / 3);
 }
 
 .advisory-grid {
@@ -1268,26 +1252,10 @@ button {
 /* PEOPLE CARDS */
 
 
-.board-grid,
 .advisory-grid,
 .team-grid {
   display: grid;
   gap: 24px;
-}
-
-/*
- * Board members sit three to a row. Flexbox is used instead of a fixed
- * column grid so a last row with fewer than three members is centred
- * automatically (justify-content: center), whatever the total count.
- */
-.board-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.board-grid .person-card {
-  flex: 0 0 calc((100% - 48px) / 3);
 }
 
 .advisory-grid {
@@ -1986,7 +1954,6 @@ button {
 
   /* ================= PEOPLE SECTIONS ================= */
 
-  .board-grid,
   .advisory-grid,
   .team-grid {
     display: grid;
@@ -1995,9 +1962,6 @@ button {
     justify-content: stretch;
   }
 
-  .board-grid .person-card,
-  .board-grid .person-card:nth-child(4),
-  .board-grid .person-card:nth-child(5),
   .team-grid .person-card,
   .team-grid .person-card:nth-child(3) {
     width: 100%;
@@ -2242,7 +2206,6 @@ button {
   .identity-grid,
   .mission-grid,
   .values-grid,
-  .board-grid,
   .advisory-grid,
   .team-grid {
     display: flex;
@@ -2271,7 +2234,6 @@ button {
     margin-bottom: 0;
   }
 
-  .board-grid,
   .advisory-grid,
   .team-grid {
     margin-bottom: 10px;
@@ -2281,7 +2243,6 @@ button {
   .identity-grid,
   .mission-grid,
   .values-grid,
-  .board-grid,
   .advisory-grid,
   .team-grid {
     scrollbar-width: none;
@@ -2290,7 +2251,6 @@ button {
   .identity-grid::-webkit-scrollbar,
   .mission-grid::-webkit-scrollbar,
   .values-grid::-webkit-scrollbar,
-  .board-grid::-webkit-scrollbar,
   .advisory-grid::-webkit-scrollbar,
   .team-grid::-webkit-scrollbar {
     display: none;
@@ -2319,9 +2279,6 @@ button {
 
   /* ================= SCROLLABLE PEOPLE CARDS ================= */
 
-  .board-grid .person-card,
-  .board-grid .person-card:nth-child(4),
-  .board-grid .person-card:nth-child(5),
   .advisory-grid .person-card,
   .team-grid .person-card,
   .team-grid .person-card:nth-child(3) {
@@ -2412,9 +2369,6 @@ button {
     padding: 17px;
   }
 
-  .board-grid .person-card,
-  .board-grid .person-card:nth-child(4),
-  .board-grid .person-card:nth-child(5),
   .advisory-grid .person-card,
   .team-grid .person-card,
   .team-grid .person-card:nth-child(3) {

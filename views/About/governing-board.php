@@ -61,6 +61,8 @@ $defaultPhoto = 'assets/images/earg-logo.png';
   <meta name="description" content="The governing board of Effective Altruist Research Group (EARG) provides strategic oversight, policy direction, accountability and institutional guidance." />
 
   <link rel="stylesheet" href="<?= url('assets/css/about.css?v=5') ?>">
+  <!-- Governing Board specific styles (loaded after about.css so it wins) -->
+  <link rel="stylesheet" href="<?= url('assets/css/governing-board.css?v=1') ?>">
   <script defer src="<?= url('assets/vendor/alpinejs/alpine.min.js') ?>"></script>
 </head>
 
